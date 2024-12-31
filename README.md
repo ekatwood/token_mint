@@ -5,7 +5,9 @@ A Solana token factory with no fees, just the transaction fees.
 Here's the breakdown:
 
 95% of tokens  -> liquidity pool wallet
+
 4.5% of tokens -> user of website
+
 0.5% of tokens -> goes to the website
 
 A unique, shareable webpage will be created for the user, showcasing the logo art and name of the new token.
