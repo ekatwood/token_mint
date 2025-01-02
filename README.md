@@ -18,4 +18,6 @@ Starting a liquidity pool on Raydium is easy, but you probably want about $5k wo
 
 Everything you need to start a cryptocurrency, and all you have to pay is the transaction fees, which are minimal on Solana.
 
-To contribute to this project, send SOL to: EAnhd395fYm16SgYvEGVhp1hhukVGb5oz7CwK6nBf4Mw
+To contribute to this project, send $SOL to: EAnhd395fYm16SgYvEGVhp1hhukVGb5oz7CwK6nBf4Mw
+
+To invest in this project and get 0.25% of tokens minted, be the first person to send 25 $SOL to the above address.
