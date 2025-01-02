@@ -17,3 +17,5 @@ The user will be able to set a price for each token and auction off some of the 
 Starting a liquidity pool on Raydium is easy, but you probably want about $5k worth of capital to have a smooth launch.
 
 Everything you need to start a cryptocurrency, and all you have to pay is the transaction fees, which are minimal on Solana.
+
+To contribute to this project, send SOL to: EAnhd395fYm16SgYvEGVhp1hhukVGb5oz7CwK6nBf4Mw
