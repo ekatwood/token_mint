@@ -14,13 +14,13 @@ class TokenMint extends StatelessWidget {
     return MaterialApp(
       title: 'token-mint',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
       home: const TokenFactory(),
     );
   }
 }
+
 class TokenFactory extends StatefulWidget {
   const TokenFactory({Key? key}) : super(key: key);
 
@@ -49,6 +49,49 @@ class _TokenFactoryState extends State<TokenFactory> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.tealAccent,
+        elevation: 3,
+        shadowColor: Colors.teal,
+        toolbarHeight: 106,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child:
+              Image.asset(
+                'assets/logo.png', // Ensure this matches your logo asset path
+                height: 100,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GestureDetector(
+              onTap: () {
+                // TODO: Add functionality for wallet icon
+                print('Wallet image tapped');
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: Image.asset(
+                  'assets/wallet.png', // Ensure this matches your wallet asset path
+                  height: 40,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -110,9 +153,7 @@ class _TokenFactoryState extends State<TokenFactory> {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    // TODO: Add functionality to create token
                     if (_formKey.currentState!.validate() && _logoFile != null) {
-                      // Print form data for now
                       print('Name: ${_nameController.text}');
                       print('Ticker: ${_tickerController.text}');
                       print('Logo: ${_logoFile!.path}');
@@ -130,7 +171,6 @@ class _TokenFactoryState extends State<TokenFactory> {
         ),
       ),
     );
-
   }
 
   @override
