@@ -32,7 +32,7 @@ class TokenFactory extends StatefulWidget {
 class _TokenFactoryState extends State<TokenFactory> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _tickerController = TextEditingController();
+  final TextEditingController _symbolController = TextEditingController();
   File? _logoFile;
   final ImagePicker _picker = ImagePicker();
   String? _walletAddress;
@@ -115,14 +115,14 @@ class _TokenFactoryState extends State<TokenFactory> {
               ),
               const SizedBox(height: 16),
               TextFormField(
-                controller: _tickerController,
+                controller: _symbolController,
                 decoration: const InputDecoration(
-                  labelText: 'Ticker',
+                  labelText: 'Symbol ex DOGE',
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter the ticker';
+                    return 'Please enter the symbol';
                   }
                   return null;
                 },
@@ -156,7 +156,7 @@ class _TokenFactoryState extends State<TokenFactory> {
                   onPressed: () {
                     if (_formKey.currentState!.validate() && _logoFile != null) {
                       print('Name: ${_nameController.text}');
-                      print('Ticker: ${_tickerController.text}');
+                      print('Ticker: ${_symbolController.text}');
                       print('Logo: ${_logoFile!.path}');
                     } else if (_logoFile == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -177,7 +177,7 @@ class _TokenFactoryState extends State<TokenFactory> {
   @override
   void dispose() {
     _nameController.dispose();
-    _tickerController.dispose();
+    _symbolController.dispose();
     super.dispose();
   }
 }
