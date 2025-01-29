@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'phantom_wallet.dart';
 
 void main() {
   runApp(const TokenMint());
@@ -33,8 +34,8 @@ class _TokenFactoryState extends State<TokenFactory> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _tickerController = TextEditingController();
   File? _logoFile;
-
   final ImagePicker _picker = ImagePicker();
+  String? _walletAddress;
 
   Future<void> _pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -75,8 +76,8 @@ class _TokenFactoryState extends State<TokenFactory> {
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
               onTap: () {
-                // TODO: Add functionality for wallet icon
-                print('Wallet image tapped');
+                _walletAddress = connectPhantom();
+                print(_walletAddress);
               },
               child: Container(
                 decoration: BoxDecoration(
