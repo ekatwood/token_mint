@@ -23,3 +23,7 @@ Everything you need to start a cryptocurrency, and all you have to pay is the tr
 To contribute to this project, send $SOL to: EAnhd395fYm16SgYvEGVhp1hhukVGb5oz7CwK6nBf4Mw
 
 To invest in this project and get 0.25% of tokens minted, be the first person to send 25 $SOL to the above address.
+
+# Landing Page:
+<img width="1171" alt="Screenshot 2025-01-30 at 4 50 20 PM" src="https://github.com/user-attachments/assets/b1e6e769-90db-4836-9cee-db8e0856c16a" />
+
