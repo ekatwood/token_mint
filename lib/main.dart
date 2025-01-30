@@ -37,6 +37,8 @@ class _TokenFactoryState extends State<TokenFactory> {
   final ImagePicker _picker = ImagePicker();
   String? _walletAddress;
 
+  String _fontFamily = 'SourceCodePro';
+
   Future<void> _pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
@@ -58,113 +60,146 @@ class _TokenFactoryState extends State<TokenFactory> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            SizedBox(width: 24), // Offset by the width of the wallet image
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
               ),
               clipBehavior: Clip.antiAlias,
-              child:
-              Image.asset(
-                'assets/logo.png', // Ensure this matches your logo asset path
+              child: Image.asset(
+                'assets/logo.png',
                 height: 100,
+              ),
+            ),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.only(right: 14.0),
+              child: GestureDetector(
+                onTap: () {
+                  _walletAddress = connectPhantom();
+                  print(_walletAddress);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  clipBehavior: Clip.antiAlias,
+                  child: Image.asset(
+                    'assets/wallet.png',
+                    height: 40,
+                  ),
+                ),
               ),
             ),
           ],
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GestureDetector(
-              onTap: () {
-                _walletAddress = connectPhantom();
-                print(_walletAddress);
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                clipBehavior: Clip.antiAlias,
-                child: Image.asset(
-                  'assets/wallet.png', // Ensure this matches your wallet asset path
-                  height: 40,
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              TextFormField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Name of token',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the token name';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _symbolController,
-                decoration: const InputDecoration(
-                  labelText: 'Symbol ex DOGE',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the symbol';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  ElevatedButton(
-                    onPressed: _pickImage,
-                    child: const Text('Upload Logo'),
+              const SizedBox(height: 30),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 320),
+                child: TextFormField(
+                  controller: _nameController,
+                  decoration: InputDecoration(
+                    labelText: 'Name of token',
+                    labelStyle: TextStyle(fontFamily: _fontFamily), // Label font family
+                    border: const OutlineInputBorder(),
                   ),
-                  const SizedBox(width: 16),
-                  if (_logoFile != null)
-                    Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8),
-                        image: DecorationImage(
-                          image: FileImage(_logoFile!),
-                          fit: BoxFit.cover,
-                        ),
+                  style: TextStyle(fontFamily: _fontFamily), // Input text font family
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter the token name';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              const SizedBox(height: 16),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 240),
+                child: TextFormField(
+                  controller: _symbolController,
+                  decoration: InputDecoration(
+                    labelText: 'Symbol ex DOGE',
+                    labelStyle: TextStyle(fontFamily: _fontFamily), // Label font family
+                    border: const OutlineInputBorder(),
+                  ),
+                  style: TextStyle(fontFamily: _fontFamily), // Input text font family
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter the symbol';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              const SizedBox(height: 16),
+              Center(
+                child: SizedBox(
+                  width: 190,
+                  child: ElevatedButton(
+                    onPressed: _pickImage,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.teal,
+                      foregroundColor: Colors.white,
+                      textStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontFamily: _fontFamily,
                       ),
                     ),
-                ],
+                    child: const Text('Upload Logo'),
+                  ),
+                ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
+              if (_logoFile != null)
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(8),
+                    image: DecorationImage(
+                      image: FileImage(_logoFile!),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              const SizedBox(height: 50),
               Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate() && _logoFile != null) {
-                      print('Name: ${_nameController.text}');
-                      print('Ticker: ${_symbolController.text}');
-                      print('Logo: ${_logoFile!.path}');
-                    } else if (_logoFile == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Please upload a logo.')),
-                      );
-                    }
-                  },
-                  child: const Text('Create Token'),
+                child: SizedBox(
+                  width: 150,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate() && _logoFile != null) {
+                        print('Name: ${_nameController.text}');
+                        print('Symbol: ${_symbolController.text}');
+                        print('Logo: ${_logoFile!.path}');
+                      } else if (_logoFile == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Please upload a logo.')),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.teal,
+                      foregroundColor: Colors.white,
+                      textStyle: TextStyle(
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        fontFamily: _fontFamily,
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                    ),
+                    child: const Text('Create Token'),
+                  ),
                 ),
               ),
             ],
