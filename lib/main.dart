@@ -60,7 +60,7 @@ class _TokenFactoryState extends State<TokenFactory> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(width: 24), // Offset by the width of the wallet image
+            SizedBox(width: 24),
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
@@ -108,10 +108,10 @@ class _TokenFactoryState extends State<TokenFactory> {
                   controller: _nameController,
                   decoration: InputDecoration(
                     labelText: 'Name of token',
-                    labelStyle: TextStyle(fontFamily: _fontFamily), // Label font family
+                    labelStyle: TextStyle(fontFamily: _fontFamily, fontWeight: FontWeight.bold),
                     border: const OutlineInputBorder(),
                   ),
-                  style: TextStyle(fontFamily: _fontFamily), // Input text font family
+                  style: TextStyle(fontFamily: _fontFamily, fontWeight: FontWeight.bold),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the token name';
@@ -127,10 +127,10 @@ class _TokenFactoryState extends State<TokenFactory> {
                   controller: _symbolController,
                   decoration: InputDecoration(
                     labelText: 'Symbol ex DOGE',
-                    labelStyle: TextStyle(fontFamily: _fontFamily), // Label font family
+                    labelStyle: TextStyle(fontFamily: _fontFamily, fontWeight: FontWeight.bold),
                     border: const OutlineInputBorder(),
                   ),
-                  style: TextStyle(fontFamily: _fontFamily), // Input text font family
+                  style: TextStyle(fontFamily: _fontFamily, fontWeight: FontWeight.bold),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the symbol';
@@ -174,7 +174,7 @@ class _TokenFactoryState extends State<TokenFactory> {
               const SizedBox(height: 50),
               Center(
                 child: SizedBox(
-                  width: 150,
+                  width: 162,
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate() && _logoFile != null) {
@@ -196,9 +196,24 @@ class _TokenFactoryState extends State<TokenFactory> {
                         fontSize: 18,
                         fontFamily: _fontFamily,
                       ),
-                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
                     ),
                     child: const Text('Create Token'),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 520),
+                child: Center(
+                  child: Text(
+                    "By clicking 'Create Token', you attest that no copyrighted or trademarked materials or intellectual property is being used in your minted Solana token.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: _fontFamily,
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
+                    ),
                   ),
                 ),
               ),
@@ -207,12 +222,5 @@ class _TokenFactoryState extends State<TokenFactory> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _symbolController.dispose();
-    super.dispose();
   }
 }
