@@ -16,6 +16,8 @@ Arweave $AR will be used to store and host the logo. The user will pay for that 
 
 The user will be able to set a price for each token and auction off some of the premine, or they can just airdrop tokens as they see fit.
 
+Also, the user can set a maximum amount per wallet for the auction, for example $200 / wallet. The auction is first come first serve, and transactions are processed as a queue. This can make it so that 'retail investors' can have a fair chance of getting some of the premine, before the token is available on Raydium publicly.
+
 Starting a liquidity pool on Raydium is easy, but you probably want about $5k worth of capital to have a smooth launch.
 
 Everything you need to start a cryptocurrency, and all you have to pay is the transaction fees, which are minimal on Solana.
