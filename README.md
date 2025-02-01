@@ -26,5 +26,6 @@ To invest in this project and get 0.25% of tokens minted, be the first person to
 
 # Landing Page:
 
-<img width="1171" alt="Screenshot 2025-01-31 at 7 25 36 PM" src="https://github.com/user-attachments/assets/72a17aee-8c44-4f96-8b1b-787694559b30" />
+<img width="1171" alt="Screenshot 2025-02-01 at 12 34 37 PM" src="https://github.com/user-attachments/assets/d6d10ea9-def1-486c-b8a7-b507f2cdf7cd" />
+
 
