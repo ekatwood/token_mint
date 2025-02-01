@@ -16,6 +16,10 @@ Arweave $AR will be used to store and host the logo. The user will pay for that 
 
 The user will be able to set a price for each token and auction off some of the premine, or they can just airdrop tokens as they see fit.
 
+Also, the user can set a maximum amount per wallet for the auction, for example $200 / wallet. The auction is first come first serve, and transactions are processed as a queue. This can make it so that 'retail investors' can have a fair chance of getting some of the premine, before the token is available on Raydium publicly. The other advantage to this approach is the premine will be spread across many more accounts, making a 'rug pull' event not possible.
+
+The reason for 'rug pull' events is that developers give way too much premine to investors and private interests, who can cause the price to drop dramatically if they sell all their holdings at once. What is different about token-mint, is that 95% of the tokens are tradable, and only 5% are set aside for founders / investors / private interests who get access to the token early. No more rug pulls, just smooth launches of tradable Solana tokens.
+
 Starting a liquidity pool on Raydium is easy, but you probably want about $5k worth of capital to have a smooth launch.
 
 Everything you need to start a cryptocurrency, and all you have to pay is the transaction fees, which are minimal on Solana.
@@ -26,5 +30,6 @@ To invest in this project and get 0.25% of tokens minted, be the first person to
 
 # Landing Page:
 
-<img width="1171" alt="Screenshot 2025-01-31 at 7 25 36 PM" src="https://github.com/user-attachments/assets/72a17aee-8c44-4f96-8b1b-787694559b30" />
+<img width="1171" alt="Screenshot 2025-02-01 at 12 34 37 PM" src="https://github.com/user-attachments/assets/d6d10ea9-def1-486c-b8a7-b507f2cdf7cd" />
+
 
