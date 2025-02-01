@@ -1,16 +1,27 @@
-function isPhantomInstalled() {
-  var m = window.solana && window.solana.isPhantom;
-  console.log("isPhantomInstalled: " + m);
-  return window.solana && window.solana.isPhantom;
-}
-
 async function connectPhantom() {
-    try {
-      const resp = await window.solana.connect();
-      return resp.publicKey.toString(); // Returns the wallet's public key
-    } catch (err) {
-      //console.error("Connection failed:", err);
-      return "Install Phantom browser extension.";
+    //console.log("connectPhantom()");
+
+    if (!window.solana) {
+        console.error("Phantom Wallet not installed.");
+        return null;
     }
-  }
+
+    try {
+        // Connect to Phantom
+        const resp = await window.solana.connect();
+        const publicKey = resp.publicKey.toString();
+        console.log("Connected to Phantom:", publicKey);
+
+        // Request user to sign a message for authentication
+        const message = "Sign this message to complete login to Phantom Wallet.";
+        const encodedMessage = new TextEncoder().encode(message);
+
+        const signedMessage = await window.solana.signMessage(encodedMessage, "utf8");
+        console.log("User signed the message:", signedMessage);
+
+        return { publicKey, signedMessage };
+    } catch (err) {
+        console.error("Connection or signing failed:", err);
+        return "Connection or signing failed. Please try again.";
+    }
 }

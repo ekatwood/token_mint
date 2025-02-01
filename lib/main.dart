@@ -77,9 +77,9 @@ class _TokenFactoryState extends State<TokenFactory> {
               child: GestureDetector(
                 onTap: () {
                   _walletAddress = connectPhantom();
-                  if(_walletAddress == 'Install Phantom browser extension.'){
+                  if(_walletAddress == null){
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(_walletAddress!)),
+                      SnackBar(content: Text('Please make sure Phantom Wallet browser extension is installed.')),
                     );
                   }
                   else{
