@@ -77,7 +77,15 @@ class _TokenFactoryState extends State<TokenFactory> {
               child: GestureDetector(
                 onTap: () {
                   _walletAddress = connectPhantom();
-                  print(_walletAddress);
+                  if(_walletAddress == 'Install Phantom browser extension.'){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(_walletAddress!)),
+                    );
+                  }
+                  else{
+                    print('wallet connected:');
+                    print(_walletAddress);
+                  }
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -207,7 +215,7 @@ class _TokenFactoryState extends State<TokenFactory> {
                 constraints: const BoxConstraints(maxWidth: 520),
                 child: Center(
                   child: Text(
-                    "By clicking 'Create Token', you attest that no copyrighted or trademarked materials or intellectual property is being used in your minted Solana token.",
+                    "By clicking 'Create Token', you assume liability for any potential intellectual property infringement related to your Solana token. Please only use original ideas and artwork.",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: _fontFamily,
