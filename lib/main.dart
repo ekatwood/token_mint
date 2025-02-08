@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'phantom_wallet.dart';
+import 'dart:typed_data';
+import 'package:path/path.dart' as path;
 
 void main() {
   runApp(const TokenMint());
@@ -33,19 +34,34 @@ class _TokenFactoryState extends State<TokenFactory> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _symbolController = TextEditingController();
-  File? _logoFile;
+  Uint8List? _logoFileBytes;
   final ImagePicker _picker = ImagePicker();
   String? _walletAddress;
 
   String _fontFamily = 'SourceCodePro';
 
   Future<void> _pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    try {
+      final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
-    if (pickedFile != null) {
-      setState(() {
-        _logoFile = File(pickedFile.path);
-      });
+      if (pickedFile != null) {
+        String fileName = pickedFile.name; // Get file name for web
+        String extension = path.extension(fileName).toLowerCase(); // Get file extension
+
+        if (extension == '.png' || extension == '.jpg' || extension == '.jpeg' || extension == '.webp') {
+          // Read bytes for web (since we can't use File() in web)
+          _logoFileBytes = await pickedFile.readAsBytes();
+
+          // After the async task completes, update the state
+          setState(() {});
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Only .png, .jpg, .jpeg, or .webp files are allowed.')),
+          );
+        }
+      }
+    } catch (e) {
+      print("Error picking image: $e");
     }
   }
 
@@ -75,11 +91,12 @@ class _TokenFactoryState extends State<TokenFactory> {
             Padding(
               padding: const EdgeInsets.only(right: 14.0),
               child: GestureDetector(
-                onTap: () {
-                  _walletAddress = connectPhantom();
-                  if(_walletAddress == null){
+                onTap: () async {
+                  _walletAddress = await connectPhantom();
+                  print('walletAddress: '+ _walletAddress.toString());
+                  if(_walletAddress == "helloworld"){
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Please make sure Phantom Wallet browser extension is installed.')),
+                      SnackBar(content: Text(_walletAddress.toString())),
                     );
                   }
                   else{
@@ -166,30 +183,26 @@ class _TokenFactoryState extends State<TokenFactory> {
                 ),
               ),
               const SizedBox(height: 16),
-              if (_logoFile != null)
-                Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(8),
-                    image: DecorationImage(
-                      image: FileImage(_logoFile!),
-                      fit: BoxFit.cover,
-                    ),
+              if (_logoFileBytes != null)
+                ClipOval(
+                  child: Image.memory(
+                    _logoFileBytes!,
+                    width: 125,
+                    height: 125,
+                    fit: BoxFit.cover,
                   ),
                 ),
-              const SizedBox(height: 50),
+              const SizedBox(height: 30),
               Center(
                 child: SizedBox(
                   width: 162,
                   child: ElevatedButton(
                     onPressed: () {
-                      if (_formKey.currentState!.validate() && _logoFile != null) {
+                      if (_formKey.currentState!.validate() && _logoFileBytes != null) {
                         print('Name: ${_nameController.text}');
                         print('Symbol: ${_symbolController.text}');
-                        print('Logo: ${_logoFile!.path}');
-                      } else if (_logoFile == null) {
+                        //print('Logo: ${_logoFileBytes!.path}');
+                      } else if (_logoFileBytes == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Please upload a logo.')),
                         );
