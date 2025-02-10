@@ -106,11 +106,11 @@ class _TokenFactoryState extends State<TokenFactory> {
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(5),
                   ),
                   clipBehavior: Clip.antiAlias,
                   child: Image.asset(
-                    'assets/wallet.png',
+                    'assets/phantom-logo.png',
                     height: 40,
                   ),
                 ),
