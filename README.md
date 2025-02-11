@@ -20,7 +20,7 @@ The auction will use $USDC on Solana blockchain so it is clear how much each tok
 
 Arweave $AR will be used to store and host the logo. The user will pay for that transaction fee as well, which should also be minimal.
 
-Starting a liquidity pool on Raydium is easy, but you probably want about 2,000 $USDC to have a smooth launch.
+Starting a liquidity pool on Raydium is easy, but you probably want about $2,000 worth of capital to have a smooth launch.
 
 Everything you need to start a cryptocurrency, and all you have to pay is the transaction fees, which are minimal on Solana.
 
