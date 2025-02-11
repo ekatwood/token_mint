@@ -10,11 +10,13 @@ Here's the breakdown:
 
 0.5% of tokens -> goes to the website
 
-A unique, shareable webpage will be created for the user, showcasing the logo art and name of the new token.
+A unique, shareable webpage will be created for the user's public wallet address, showcasing the tokens they've created, with a 'like' button for each.
+
+The main page will be a scrollable feed of the most popular tokens, sorted by like count DESC.
+
+The user will be able to set a price for tokens they want to auction off to raise capital for the liquidity pool if they choose to, or they can just airdrop tokens as they see fit.
 
 Arweave $AR will be used to store and host the logo. The user will pay for that transaction fee as well, which should also be minimal.
-
-The user will be able to set a price for each token and auction off some of the premine, or they can just airdrop tokens as they see fit.
 
 Starting a liquidity pool on Raydium is easy, but you probably want about $5k worth of capital to have a smooth launch.
 
