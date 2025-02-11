@@ -14,7 +14,7 @@ A unique, shareable webpage will be created for the user's public wallet address
 
 The main page will be a scrollable feed of the most popular tokens, sorted by like count DESC.
 
-The mint is always 500M tokens, and the user will be able to auction off tokens from the liquidity pool wallet to raise capital for launching on Raydium.
+The mint is always 500M tokens, and the user will be able to auction off tokens from the liquidity pool wallet to raise capital for launching on Raydium, or airdrop them as they see fit.
 
 The auction will use $USDC on Solana blockchain so it is clear how much each token is priced at.
 
