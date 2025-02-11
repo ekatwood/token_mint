@@ -18,7 +18,7 @@ The user will be able to set a price for tokens they want to auction off to rais
 
 Arweave $AR will be used to store and host the logo. The user will pay for that transaction fee as well, which should also be minimal.
 
-Starting a liquidity pool on Raydium is easy, but you probably want about $5k worth of capital to have a smooth launch.
+Starting a liquidity pool on Raydium is easy, but you probably want about $2,000 worth of $SOL to have a smooth launch.
 
 Everything you need to start a cryptocurrency, and all you have to pay is the transaction fees, which are minimal on Solana.
 
