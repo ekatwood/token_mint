@@ -1,7 +1,9 @@
-import 'package:js/js.dart';
+import 'dart:js_util' as js_util;
+import 'dart:html' as html;
 
-@JS('connectPhantom')
-external String? connectPhantom();
-
-@JS('signTransaction')
-external Future<String?> signTransaction(String fromPubkey, String toPubkey, int lamports);
+Future<String> connectPhantom() async {
+  final result = await js_util.promiseToFuture<String>(
+    js_util.callMethod(html.window, 'connectPhantom', []),
+  );
+  return result;
+}
