@@ -32,5 +32,6 @@ To invest in this project and get 0.25% of tokens minted, be the first person to
 
 <img width="1176" alt="Screenshot 2025-02-10 at 5 13 21 PM" src="https://github.com/user-attachments/assets/ac16b40c-8ad7-4fdb-af98-0e291c2d7b9c" />
 
+<img width="395" alt="Screenshot 2025-02-12 at 9 25 44 PM" src="https://github.com/user-attachments/assets/df413a85-4534-4f07-ada4-39d9f3c64505" />
 
 
