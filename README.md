@@ -1,5 +1,7 @@
 # token_mint
 
+500M tokens minted, with just a few clicks and a few transactions using Solana $SOL.
+
 Here's the breakdown:
 
 95% of tokens  -> liquidity pool wallet
@@ -16,11 +18,11 @@ The mint is always 500M tokens, and the user will be able to auction off tokens 
 
 The auction will use $USDC on Solana blockchain so it is clear how much each token is priced at.
 
-Arweave $AR will be used to store and host the logo.
+Arweave $AR will be used to store and host the logo image (recommended 500x500 px .png, .jpg, or .svg) and JSON required for the token's metadata so the logo image can be displayed on Raydium Protocol.
 
 Starting a liquidity pool on Raydium is easy, but you probably want about $2,000 worth of capital to have a smooth launch.
 
-Everything you need to start a cryptocurrency, and all you have to pay is the transaction fees, which are minimal on Solana.
+Everything you need to start a cryptocurrency, and all you have to pay is the transaction fees.
 
 To contribute to this project, send $SOL to: EAnhd395fYm16SgYvEGVhp1hhukVGb5oz7CwK6nBf4Mw
 
