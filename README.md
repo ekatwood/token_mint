@@ -1,7 +1,5 @@
 # token_mint
 
-A Solana token factory with no fees, just the transaction fees.
-
 Here's the breakdown:
 
 95% of tokens  -> liquidity pool wallet
