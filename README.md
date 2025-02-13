@@ -18,7 +18,7 @@ The mint is always 500M tokens, and the user will be able to auction off tokens 
 
 The auction will use $USDC on Solana blockchain so it is clear how much each token is priced at.
 
-Arweave $AR will be used to store and host the logo. The user can pay for those transaction fees (you have to store an image and JSON) with $SOL as well, and Arweave has reasonable hosting fees.
+Arweave $AR will be used to store and host the logo. The user pays for those transaction fees (you have to store an image and JSON) with $SOL as well, and Arweave has reasonable hosting fees.
 
 Starting a liquidity pool on Raydium is easy, but you probably want about $2,000 worth of capital to have a smooth launch.
 
