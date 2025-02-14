@@ -20,7 +20,7 @@ The auction will use $USDC on Solana blockchain so it is clear how much each tok
 
 Arweave $AR will be used to store and host the logo image (recommended 500x500 px .png, .jpg, or .svg) and JSON required for the token's metadata so the logo image can be displayed on Raydium Protocol.
 
-Starting a liquidity pool on Raydium is easy, but you probably want about $2,000 worth of capital to have a smooth launch.
+Starting a liquidity pool on Raydium is easy, but you probably want about $500 worth of capital to launch it.
 
 Everything you need to start a cryptocurrency, and all you have to pay is the transaction fees.
 
