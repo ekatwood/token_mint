@@ -20,13 +20,19 @@ The auction will use $USDC on Solana blockchain so it is clear how much each tok
 
 Arweave $AR will be used to store and host the logo image (recommended 500x500 px .png, .jpg, or .svg) and JSON required for the token's metadata so the logo image can be displayed on Raydium Protocol.
 
-Starting a liquidity pool on Raydium is easy, but you probably want about $2,000 worth of capital to have a smooth launch.
+Starting a liquidity pool on Raydium is easy, but you probably want about 500 $USDC worth of capital to launch it.
 
 Everything you need to start a cryptocurrency, and all you have to pay is the transaction fees.
 
-To contribute to this project, send $SOL to: EAnhd395fYm16SgYvEGVhp1hhukVGb5oz7CwK6nBf4Mw
+There is a total of 0.25% of tokens (50% equity, since the website keeps 0.5% of tokens) available for a total of 25 $SOL. You can send any amount of $SOL to the following address, to get a portion of that equity, until 25 $SOL is achieved. Please only send amounts in increments of 0.25 $SOL.
 
-To invest in this project and get 0.25% of tokens minted, be the first person to send 25 $SOL to the above address.
+EAnhd395fYm16SgYvEGVhp1hhukVGb5oz7CwK6nBf4Mw
+
+The Solana SPL tokens minted by the website will be distributed to equity holders using the public wallet address you send the $SOL with. This project will remain open source, so you can see your public wallet address in the source code when the website goes to production, and verify the amount being sent to your public wallet address.
+
+Check to see the current amount of $SOL raised here: https://solscan.io/account/EAnhd395fYm16SgYvEGVhp1hhukVGb5oz7CwK6nBf4Mw
+
+If more than 25 $SOL is sent, the remainder will be returned back to the sender. This is a first come, first serve equity auction.
 
 # Landing Page:
 
