@@ -36,7 +36,8 @@ If more than 25 $SOL is sent, the remainder will be returned back to the sender.
 
 # Landing Page:
 
-<img width="1176" alt="Screenshot 2025-02-10 at 5 13 21 PM" src="https://github.com/user-attachments/assets/ac16b40c-8ad7-4fdb-af98-0e291c2d7b9c" />
+<img width="1172" alt="Screenshot 2025-02-14 at 5 44 22 PM" src="https://github.com/user-attachments/assets/475b5126-ab93-4db9-81ec-d8f762fd022d" />
+
 
 <img width="395" alt="Screenshot 2025-02-12 at 9 25 44 PM" src="https://github.com/user-attachments/assets/df413a85-4534-4f07-ada4-39d9f3c64505" />
 
