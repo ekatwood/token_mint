@@ -236,7 +236,7 @@ class _TokenFactoryState extends State<TokenFactory> {
                 constraints: const BoxConstraints(maxWidth: 520),
                 child: Center(
                   child: Text(
-                    "By clicking 'Create Token', you assume liability for any potential intellectual property infringement related to your Solana token. Please only use original ideas and artwork.",
+                    "By clicking 'Create Token', you assume liability for any potential intellectual property infringement related to your Solana token. Please only use original ideas and artwork. Google's SafeSearch API will be used to make sure images are appropriate.",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: _fontFamily,
