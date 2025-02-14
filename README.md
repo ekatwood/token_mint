@@ -28,7 +28,7 @@ There is a total of 0.25% of tokens (50% equity, since the website keeps 0.5% of
 
 EAnhd395fYm16SgYvEGVhp1hhukVGb5oz7CwK6nBf4Mw
 
-Your minted Solana SPL tokens will be distributed to the public wallet address you send the $SOL with. This project will remain open source, so you can see your public wallet address in the source code when the website goes to production, and verify the amount being sent to you.
+The Solana SPL tokens minted by the website will be distributed to the public wallet address you send the $SOL with. This project will remain open source, so you can see your public wallet address in the source code when the website goes to production, and verify the amount being sent to you.
 
 Check to see the current amount of $SOL raised here: https://solscan.io/account/EAnhd395fYm16SgYvEGVhp1hhukVGb5oz7CwK6nBf4Mw
 
