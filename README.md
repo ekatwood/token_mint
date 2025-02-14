@@ -32,7 +32,7 @@ The Solana SPL tokens minted by the website will be distributed to equity holder
 
 Check to see the current amount of $SOL raised here: https://solscan.io/account/EAnhd395fYm16SgYvEGVhp1hhukVGb5oz7CwK6nBf4Mw
 
-If more than 25 $SOL is sent, the remainder will be sent back. First come, first serve equity auction.
+If more than 25 $SOL is sent, the remainder will be returned back to the sender. This is a first come, first serve equity auction.
 
 # Landing Page:
 
