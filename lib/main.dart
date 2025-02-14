@@ -1,10 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'phantom_wallet.dart';
+import 'firestore_functions.dart';
+import 'firebase_options.dart';
 import 'dart:typed_data';
 import 'package:path/path.dart' as path;
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   runApp(const TokenMint());
 }
 
@@ -37,6 +43,7 @@ class _TokenFactoryState extends State<TokenFactory> {
   Uint8List? _logoFileBytes;
   final ImagePicker _picker = ImagePicker();
   String? _walletAddress;
+  String? _fileExtension;
 
   String _fontFamily = 'SourceCodePro';
 
@@ -48,7 +55,9 @@ class _TokenFactoryState extends State<TokenFactory> {
         String fileName = pickedFile.name; // Get file name for web
         String extension = path.extension(fileName).toLowerCase(); // Get file extension
 
-        if (extension == '.png' || extension == '.jpg' || extension == '.jpeg' || extension == '.webp') {
+        if (extension == '.png' || extension == '.jpg' || extension == '.svg') {
+          _fileExtension = extension.substring(1);
+
           // Read bytes for web (since we can't use File() in web)
           _logoFileBytes = await pickedFile.readAsBytes();
 
@@ -56,7 +65,7 @@ class _TokenFactoryState extends State<TokenFactory> {
           setState(() {});
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Only .png, .jpg, .jpeg, or .webp files are allowed.')),
+            const SnackBar(content: Text('Only .png, .jpg, .svg files are allowed.')),
           );
         }
       }
@@ -99,7 +108,8 @@ class _TokenFactoryState extends State<TokenFactory> {
                     );
                   }
                   else{
-                    print('Wallet connected: ' + _walletAddress.toString());
+                    //add public wallet address to database if not already there
+                    phantomWalletConnected(_walletAddress!);
                   }
                 },
                 child: Container(
