@@ -32,6 +32,8 @@ Your minted Solana SPL tokens will be distributed to the public wallet address y
 
 Check to see the current amount of $SOL raised here: https://solscan.io/account/EAnhd395fYm16SgYvEGVhp1hhukVGb5oz7CwK6nBf4Mw
 
+If more than 25 $SOL is sent, the remainder will be sent back.
+
 # Landing Page:
 
 <img width="1176" alt="Screenshot 2025-02-10 at 5 13 21 PM" src="https://github.com/user-attachments/assets/ac16b40c-8ad7-4fdb-af98-0e291c2d7b9c" />
