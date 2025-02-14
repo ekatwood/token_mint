@@ -24,9 +24,13 @@ Starting a liquidity pool on Raydium is easy, but you probably want about $2,000
 
 Everything you need to start a cryptocurrency, and all you have to pay is the transaction fees.
 
-To contribute to this project, send $SOL to: EAnhd395fYm16SgYvEGVhp1hhukVGb5oz7CwK6nBf4Mw
+There is a total of 0.25% of tokens (50% equity, since the website keeps 0.5% of tokens) available for a total of 5,000 $USDC. You can send any amount of $USDC to the following address, to get a portion of that equity, until 5,000 $USDC is achieved. Make sure it is $USDC on Solana blockchain, and please only send amounts in increments of 20 $USDC.
 
-To invest in this project and get 0.25% of tokens minted, be the first person to send 25 $SOL to the above address.
+EAnhd395fYm16SgYvEGVhp1hhukVGb5oz7CwK6nBf4Mw
+
+Your minted Solana SPL tokens will be distributed to the public wallet address you send the $USDC with. This project will remain open source, so you can see your public wallet address in the source code when the website goes to production, and verify the amount being sent to you.
+
+Check to see the current amount of $USDC raised here: https://solscan.io/account/EAnhd395fYm16SgYvEGVhp1hhukVGb5oz7CwK6nBf4Mw
 
 # Landing Page:
 
