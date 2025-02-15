@@ -18,8 +18,6 @@ The mint is 500M tokens.
 
 Arweave will be used to store and host the logo image (recommended 500x500px png or jpg). You will also need to store a JSON (JavaScript Object Notation) file that points to the image uri.
 
-Everything you need to start a cryptocurrency, and all you have to pay is the transaction fees.
-
 # Landing Page:
 
 <img width="1172" alt="Screenshot 2025-02-14 at 5 44 22 PM" src="https://github.com/user-attachments/assets/475b5126-ab93-4db9-81ec-d8f762fd022d" />
