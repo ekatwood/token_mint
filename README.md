@@ -20,9 +20,6 @@ Arweave will be used to store and host the logo image (recommended 500x500px png
 
 # Landing Page:
 
-<img width="1172" alt="Screenshot 2025-02-14 at 5 44 22 PM" src="https://github.com/user-attachments/assets/475b5126-ab93-4db9-81ec-d8f762fd022d" />
-
-
 <img width="395" alt="Screenshot 2025-02-12 at 9 25 44 PM" src="https://github.com/user-attachments/assets/df413a85-4534-4f07-ada4-39d9f3c64505" />
 
 
