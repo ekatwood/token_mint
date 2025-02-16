@@ -55,7 +55,7 @@ class _TokenFactoryState extends State<TokenFactory> {
         String fileName = pickedFile.name; // Get file name for web
         String extension = path.extension(fileName).toLowerCase(); // Get file extension
 
-        if (extension == '.png' || extension == '.jpg' || extension == '.svg') {
+        if (extension == '.png' || extension == '.jpg' || extension == '.webp') {
           _fileExtension = extension.substring(1);
 
           // Read bytes for web (since we can't use File() in web)
@@ -65,7 +65,7 @@ class _TokenFactoryState extends State<TokenFactory> {
           setState(() {});
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Only .png, .jpg, .svg files are allowed.')),
+            const SnackBar(content: Text('Only png, jpg, or webp files are allowed.')),
           );
         }
       }
@@ -203,7 +203,7 @@ class _TokenFactoryState extends State<TokenFactory> {
               const SizedBox(height: 30),
               Center(
                 child: SizedBox(
-                  width: 162,
+                  width: 208,
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate() && _logoFileBytes != null) {
@@ -227,7 +227,7 @@ class _TokenFactoryState extends State<TokenFactory> {
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 10),
                     ),
-                    child: const Text('Create Token'),
+                    child: const Text('Mint 500M Tokens'),
                   ),
                 ),
               ),
@@ -236,7 +236,7 @@ class _TokenFactoryState extends State<TokenFactory> {
                 constraints: const BoxConstraints(maxWidth: 520),
                 child: Center(
                   child: Text(
-                    "By clicking 'Create Token', you assume liability for any potential intellectual property infringement related to your Solana token. Please only use original ideas and artwork. Google's SafeSearch API will be used to make sure images are appropriate.",
+                    "Disclaimer: By clicking 'Mint 500M Tokens', you will be sending 0.5% of tokens to this website. Any tokens sent to this website that are in violation of intellectual property rights will be burned.",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: _fontFamily,
