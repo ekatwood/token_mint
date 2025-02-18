@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'phantom_wallet.dart';
 import 'firestore_functions.dart';
 import 'firebase_options.dart';
+import 'safesearch_api.dart';
 import 'dart:typed_data';
 import 'package:path/path.dart' as path;
 
@@ -55,7 +56,7 @@ class _TokenFactoryState extends State<TokenFactory> {
         String fileName = pickedFile.name; // Get file name for web
         String extension = path.extension(fileName).toLowerCase(); // Get file extension
 
-        if (extension == '.png' || extension == '.jpg' || extension == '.webp') {
+        if (extension == '.png' || extension == '.jpg' || extension == '.jpeg' || extension == '.webp') {
           _fileExtension = extension.substring(1);
 
           // Read bytes for web (since we can't use File() in web)
@@ -65,7 +66,7 @@ class _TokenFactoryState extends State<TokenFactory> {
           setState(() {});
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Only png, jpg, or webp files are allowed.')),
+            const SnackBar(content: Text('Only png, jpg, jpeg, or webp files are allowed.')),
           );
         }
       }
@@ -205,11 +206,17 @@ class _TokenFactoryState extends State<TokenFactory> {
                 child: SizedBox(
                   width: 208,
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate() && _logoFileBytes != null) {
-                        print('Name: ${_nameController.text}');
-                        print('Symbol: ${_symbolController.text}');
-                        //print('Logo: ${_logoFileBytes!.path}');
+                        bool safeImage = await checkImageSafety(_logoFileBytes!);
+                        if(!safeImage){
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Please use an appropriate image.')),
+                          );
+                        }
+                        else{
+                          //TODO: send transactions to mint token
+                        }
                       } else if (_logoFileBytes == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Please upload a logo.')),
