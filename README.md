@@ -16,7 +16,7 @@ The main page of the website will be a scrollable feed of the most popular token
 
 The mint is 500M tokens.
 
-Arweave will be used to store and host the logo image (recommended 500x500px png or jpg). You will also need to store a JSON (JavaScript Object Notation) file that points to the image uri.
+Arweave will be used to store and host the logo image (recommended 500x500px png, jpg, jpeg, or webp). You will also need to store a JSON (JavaScript Object Notation) file that points to the image uri.
 
 # Landing Page:
 
