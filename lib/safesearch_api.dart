@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'firestore_functions.dart';
 import 'package:http/http.dart' as http;
 
 Future<bool> checkImageSafety(Uint8List imageBytes) async {
@@ -25,7 +26,6 @@ Future<bool> checkImageSafety(Uint8List imageBytes) async {
   );
 
   if (response.statusCode == 200) {
-    print('response 200');
     final Map<String, dynamic> data = jsonDecode(response.body);
     final safeSearch = data["responses"][0]["safeSearchAnnotation"];
 
@@ -40,6 +40,7 @@ Future<bool> checkImageSafety(Uint8List imageBytes) async {
     }
     return true; // Image is safe
   } else {
+    errorLogger(response.body, 'checkImageSafety(Uint8List imageBytes)');
     print("SafeSearch API error: ${response.body}");
     return false; // Assume unsafe if there's an error
   }

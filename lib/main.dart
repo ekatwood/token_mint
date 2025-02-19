@@ -72,6 +72,7 @@ class _TokenFactoryState extends State<TokenFactory> {
       }
     } catch (e) {
       print("Error picking image: $e");
+      errorLogger(e.toString(), '_pickImage()');
     }
   }
 
@@ -106,6 +107,11 @@ class _TokenFactoryState extends State<TokenFactory> {
                   if(_walletAddress == "Please make sure Phantom Wallet browser extension is installed."){
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text(_walletAddress.toString())),
+                    );
+                  }
+                  else if(_walletAddress == 'error'){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Error connecting to Phantom Wallet.')),
                     );
                   }
                   else{
