@@ -4,11 +4,11 @@ Mint your own Solana Program Library (SPL) tokens, for the cost of a few $SOL tr
 
 Here is the breakdown:
 
-95% of tokens  -> liquidity pool wallet
+95% of tokens  -> set aside for airdrops, auction, and liquidity pool for trading
 
-4.5% of tokens -> user of website
+4.5% of tokens -> your wallet
 
-0.5% of tokens -> goes to the website
+0.5% of tokens -> goes to token_mint
 
 A unique, shareable webpage will be created for the user's public wallet address, showcasing the tokens they've created, with a 'like' button for each token.
 
