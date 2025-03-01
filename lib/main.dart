@@ -40,12 +40,42 @@ class _TokenFactoryState extends State<TokenFactory> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _symbolController = TextEditingController();
+  final TextEditingController _tokenQuantityController = TextEditingController();
   Uint8List? _logoFileBytes;
   final ImagePicker _picker = ImagePicker();
   String? _walletAddress;
   String? _fileExtension;
 
   String _fontFamily = 'SourceCodePro';
+
+  // Helper function to parse token quantities with M/B notation
+  int? parseTokenQuantity(String input) {
+    // Remove any commas and spaces
+    input = input.replaceAll(',', '').replaceAll(' ', '').trim().toLowerCase();
+
+    // Handle million notation
+    if (input.endsWith('m')) {
+      final value = double.tryParse(input.substring(0, input.length - 1));
+      if (value != null) {
+        return (value * 1000000).toInt();
+      }
+    }
+    // Handle billion notation
+    else if (input.endsWith('b')) {
+      final value = double.tryParse(input.substring(0, input.length - 1));
+      if (value != null) {
+        return (value * 1000000000).toInt();
+      }
+    }
+    // Handle direct integer input
+    else {
+      final value = int.tryParse(input);
+      if (value != null) {
+        return value;
+      }
+    }
+    return null;
+  }
 
   Future<void> _pickImage() async {
     try {
@@ -206,6 +236,35 @@ class _TokenFactoryState extends State<TokenFactory> {
                     fit: BoxFit.cover,
                   ),
                 ),
+              const SizedBox(height: 16),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 320),
+                child: TextFormField(
+                  controller: _tokenQuantityController,
+                  decoration: InputDecoration(
+                    labelText: 'Number Of Tokens (between 10M and 2B)',
+                    labelStyle: TextStyle(fontFamily: _fontFamily, fontWeight: FontWeight.bold),
+                    border: const OutlineInputBorder(),
+                  ),
+                  style: TextStyle(fontFamily: _fontFamily, fontWeight: FontWeight.bold),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter the token quantity';
+                    }
+                    final quantity = parseTokenQuantity(value);
+                    if (quantity == null) {
+                      return 'Please enter a valid number';
+                    }
+                    if (quantity < 10000000) {
+                      return 'Minimum quantity is 10M tokens';
+                    }
+                    if (quantity > 2000000000) {
+                      return 'Maximum quantity is 2B tokens';
+                    }
+                    return null;
+                  },
+                ),
+              ),
               const SizedBox(height: 30),
               Center(
                 child: SizedBox(
@@ -213,14 +272,22 @@ class _TokenFactoryState extends State<TokenFactory> {
                   child: ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate() && _logoFileBytes != null) {
-                        bool safeImage = await checkImageSafety(_logoFileBytes!);
-                        if(!safeImage){
+                        final tokenQuantity = parseTokenQuantity(_tokenQuantityController.text);
+                        if (tokenQuantity != null) {
+                          bool safeImage = await checkImageSafety(_logoFileBytes!);
+                          if(!safeImage){
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Please use an appropriate image.')),
+                            );
+                          }
+                          else{
+                            //TODO: send transactions to mint token
+                            // Use tokenQuantity when implementing the minting functionality
+                          }
+                        } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Please use an appropriate image.')),
+                            const SnackBar(content: Text('Invalid token quantity')),
                           );
-                        }
-                        else{
-                          //TODO: send transactions to mint token
                         }
                       } else if (_logoFileBytes == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -239,7 +306,7 @@ class _TokenFactoryState extends State<TokenFactory> {
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 10),
                     ),
-                    child: const Text('Mint 500M Tokens'),
+                    child: const Text('Mint Tokens'),
                   ),
                 ),
               ),
@@ -248,7 +315,7 @@ class _TokenFactoryState extends State<TokenFactory> {
                 constraints: const BoxConstraints(maxWidth: 520),
                 child: Center(
                   child: Text(
-                    "Disclaimer: By clicking 'Mint 500M Tokens', you will be sending 0.5% of tokens to this website. Any tokens sent to this website that are in violation of intellectual property rights will be burned.",
+                    "Disclaimer: By clicking 'Mint Tokens', you will be sending 0.5% of tokens to this website. Any tokens sent to this website that are in violation of intellectual property rights will be burned.",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: _fontFamily,

@@ -52,25 +52,26 @@ void phantomWalletConnected(String wallet_address) {
       .catchError((error) => errorLogger("Failed to add wallet address: $error",'phantomWalletConnected(String wallet_address)'));
 }
 
-void addMintedToken(String wallet_address, String token_mint_address, String name, String symbol, String image, String type) {
+void addMintedToken(String wallet_address, String token_mint_address, String name, String symbol, String image, String type, int numTokens) {
   FirebaseFirestore.instance
       .collection('public_wallet_addresses')
       .doc(wallet_address)
       .collection('tokens')
       .doc(token_mint_address)
       .set({
-        "name": name,
-        "symbol": symbol,
-        "image": image,
-        "properties": {
-          "files": [
-            {
-              "uri": image,
-              "type": type
-            }
-          ]
+    "name": name,
+    "symbol": symbol,
+    "image": image,
+    "numTokens": numTokens,
+    "properties": {
+      "files": [
+        {
+          "uri": image,
+          "type": type
         }
-      })
+      ]
+    }
+  })
       .then((_) => print("Token metadata saved to database"))
-      .catchError((error) => errorLogger("Error saving token metadata to database: $error",'addMintedToken(String wallet_address, String token_mint_address, String name, String symbol, String image, String type)'));
+      .catchError((error) => errorLogger("Error saving token metadata to database: $error", 'addMintedToken(String wallet_address, String token_mint_address, String name, String symbol, String image, String type, int numTokens)'));
 }
