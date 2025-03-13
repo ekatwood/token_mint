@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'phantom_wallet.dart';
+import 'create_token.dart';
 import 'firestore_functions.dart';
 import 'firebase_options.dart';
 import 'safesearch_api.dart';
@@ -45,6 +46,7 @@ class _TokenFactoryState extends State<TokenFactory> {
   final ImagePicker _picker = ImagePicker();
   String? _walletAddress;
   String? _fileExtension;
+  int? _tokenQuantity;
 
   String _fontFamily = 'SourceCodePro';
 
@@ -251,14 +253,14 @@ class _TokenFactoryState extends State<TokenFactory> {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the token quantity';
                     }
-                    final quantity = parseTokenQuantity(value);
-                    if (quantity == null) {
+                    _tokenQuantity = parseTokenQuantity(value);
+                    if (_tokenQuantity == null) {
                       return 'Please enter a valid number';
                     }
-                    if (quantity < 10000000) {
+                    if (_tokenQuantity! < 10000000) {
                       return 'Minimum quantity is 10M tokens';
                     }
-                    if (quantity > 2000000000) {
+                    if (_tokenQuantity! > 2000000000) {
                       return 'Maximum quantity is 2B tokens';
                     }
                     return null;
@@ -281,8 +283,9 @@ class _TokenFactoryState extends State<TokenFactory> {
                             );
                           }
                           else{
-                            //TODO: send transactions to mint token
-                            // Use tokenQuantity when implementing the minting functionality
+                            //TODO: upload logo to arweave, to get logoUri
+                            String logoUri = "";
+                            mintToken(_nameController.value.toString(), _symbolController.value.toString(), logoUri, _tokenQuantity!, _walletAddress!);
                           }
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -306,7 +309,7 @@ class _TokenFactoryState extends State<TokenFactory> {
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 10),
                     ),
-                    child: const Text('Mint Tokens'),
+                    child: const Text('Mint Token'),
                   ),
                 ),
               ),
