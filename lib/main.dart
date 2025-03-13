@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:token_mint/upload_to_Arweave.dart';
 import 'phantom_wallet.dart';
 import 'create_token.dart';
 import 'firestore_functions.dart';
@@ -283,8 +284,14 @@ class _TokenFactoryState extends State<TokenFactory> {
                             );
                           }
                           else{
-                            //TODO: upload logo to arweave, to get logoUri
-                            String logoUri = "";
+                            // Upload logo to Arweave
+                            String logoUri = await uploadToArweave(
+                              _logoFileBytes!,  // Uint8List? logo file bytes
+                              _nameController.value.toString(),        // Name of the token
+                              _symbolController.value.toString(),      // Symbol of the token
+                              _fileExtension!,    // File extension (e.g., "png", "jpg")
+                              _walletAddress!, // User's Phantom Wallet address
+                            );
                             mintToken(_nameController.value.toString(), _symbolController.value.toString(), logoUri, _tokenQuantity!, _walletAddress!);
                           }
                         } else {
