@@ -30,7 +30,7 @@ async function fetchTreasuryPublicWalletAddress() {
   }
 }
 
-async function mintToken(nameOfToken, symbol, logoUri, totalNumTokens, userPublicWalletAddress) {
+async function mintToken(nameOfToken, symbol, metadataUri, totalNumTokens, userPublicWalletAddress) {
   try {
     const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
     console.log("Connected to Devnet");
@@ -69,7 +69,7 @@ async function mintToken(nameOfToken, symbol, logoUri, totalNumTokens, userPubli
     const metadataData = {
       name: nameOfToken,
       symbol: symbol,
-      uri: logoUri,
+      uri: metadataUri,
       sellerFeeBasisPoints: 0,
       creators: null,
       collection: null,

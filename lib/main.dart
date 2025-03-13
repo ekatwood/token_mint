@@ -285,14 +285,14 @@ class _TokenFactoryState extends State<TokenFactory> {
                           }
                           else{
                             // Upload logo to Arweave
-                            String logoUri = await uploadToArweave(
+                            String metadataUri = await uploadToArweave(
                               _logoFileBytes!,  // Uint8List? logo file bytes
                               _nameController.value.toString(),        // Name of the token
                               _symbolController.value.toString(),      // Symbol of the token
                               _fileExtension!,    // File extension (e.g., "png", "jpg")
                               _walletAddress!, // User's Phantom Wallet address
                             );
-                            mintToken(_nameController.value.toString(), _symbolController.value.toString(), logoUri, _tokenQuantity!, _walletAddress!);
+                            mintToken(_nameController.value.toString(), _symbolController.value.toString(), metadataUri, _tokenQuantity!, _walletAddress!);
                           }
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
