@@ -42,7 +42,8 @@ class _TokenFactoryState extends State<TokenFactory> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _symbolController = TextEditingController();
-  final TextEditingController _tokenQuantityController = TextEditingController();
+  final TextEditingController _tokenQuantityController =
+      TextEditingController();
   Uint8List? _logoFileBytes;
   final ImagePicker _picker = ImagePicker();
   String? _walletAddress;
@@ -82,13 +83,18 @@ class _TokenFactoryState extends State<TokenFactory> {
 
   Future<void> _pickImage() async {
     try {
-      final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      final XFile? pickedFile =
+          await _picker.pickImage(source: ImageSource.gallery);
 
       if (pickedFile != null) {
         String fileName = pickedFile.name; // Get file name for web
-        String extension = path.extension(fileName).toLowerCase(); // Get file extension
+        String extension =
+            path.extension(fileName).toLowerCase(); // Get file extension
 
-        if (extension == '.png' || extension == '.jpg' || extension == '.jpeg' || extension == '.webp') {
+        if (extension == '.png' ||
+            extension == '.jpg' ||
+            extension == '.jpeg' ||
+            extension == '.webp') {
           _fileExtension = extension.substring(1);
 
           // Read bytes for web (since we can't use File() in web)
@@ -98,7 +104,9 @@ class _TokenFactoryState extends State<TokenFactory> {
           setState(() {});
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Only png, jpg, jpeg, or webp files are allowed.')),
+            const SnackBar(
+                content:
+                    Text('Only png, jpg, jpeg, or webp files are allowed.')),
           );
         }
       }
@@ -136,17 +144,14 @@ class _TokenFactoryState extends State<TokenFactory> {
               child: GestureDetector(
                 onTap: () async {
                   _walletAddress = await connectPhantom();
-                  if(_walletAddress == "Please make sure Phantom Wallet browser extension is installed."){
+                  print(_walletAddress);
+                  if (_walletAddress == 'error') {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(_walletAddress.toString())),
+                      SnackBar(
+                          content: Text(
+                              'Please make sure Phantom Wallet browser extension is installed.')),
                     );
-                  }
-                  else if(_walletAddress == 'error'){
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Error connecting to Phantom Wallet.')),
-                    );
-                  }
-                  else{
+                  } else {
                     //add public wallet address to database if not already there
                     phantomWalletConnected(_walletAddress!);
                   }
@@ -166,176 +171,219 @@ class _TokenFactoryState extends State<TokenFactory> {
           ],
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 30),
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 320),
-                child: TextFormField(
-                  controller: _nameController,
-                  decoration: InputDecoration(
-                    labelText: 'Name of token',
-                    labelStyle: TextStyle(fontFamily: _fontFamily, fontWeight: FontWeight.bold),
-                    border: const OutlineInputBorder(),
-                  ),
-                  style: TextStyle(fontFamily: _fontFamily, fontWeight: FontWeight.bold),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the token name';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              const SizedBox(height: 16),
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 240),
-                child: TextFormField(
-                  controller: _symbolController,
-                  decoration: InputDecoration(
-                    labelText: 'Symbol ex DOGE',
-                    labelStyle: TextStyle(fontFamily: _fontFamily, fontWeight: FontWeight.bold),
-                    border: const OutlineInputBorder(),
-                  ),
-                  style: TextStyle(fontFamily: _fontFamily, fontWeight: FontWeight.bold),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the symbol';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              const SizedBox(height: 16),
-              Center(
-                child: SizedBox(
-                  width: 190,
-                  child: ElevatedButton(
-                    onPressed: _pickImage,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.teal,
-                      foregroundColor: Colors.white,
-                      textStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: _fontFamily,
-                      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 30),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 320),
+                  child: TextFormField(
+                    controller: _nameController,
+                    decoration: InputDecoration(
+                      labelText: 'Name of token',
+                      labelStyle: TextStyle(
+                          fontFamily: _fontFamily, fontWeight: FontWeight.bold),
+                      border: const OutlineInputBorder(),
                     ),
-                    child: const Text('Upload Logo'),
+                    style: TextStyle(
+                        fontFamily: _fontFamily, fontWeight: FontWeight.bold),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter the token name';
+                      }
+                      return null;
+                    },
                   ),
                 ),
-              ),
-              const SizedBox(height: 16),
-              if (_logoFileBytes != null)
-                ClipOval(
-                  child: Image.memory(
-                    _logoFileBytes!,
-                    width: 125,
-                    height: 125,
-                    fit: BoxFit.cover,
+                const SizedBox(height: 16),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 240),
+                  child: TextFormField(
+                    controller: _symbolController,
+                    decoration: InputDecoration(
+                      labelText: 'Symbol ex DOGE',
+                      labelStyle: TextStyle(
+                          fontFamily: _fontFamily, fontWeight: FontWeight.bold),
+                      border: const OutlineInputBorder(),
+                    ),
+                    style: TextStyle(
+                        fontFamily: _fontFamily, fontWeight: FontWeight.bold),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter the symbol';
+                      }
+                      return null;
+                    },
                   ),
                 ),
-              const SizedBox(height: 16),
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 320),
-                child: TextFormField(
-                  controller: _tokenQuantityController,
-                  decoration: InputDecoration(
-                    labelText: 'Number Of Tokens (between 10M and 2B)',
-                    labelStyle: TextStyle(fontFamily: _fontFamily, fontWeight: FontWeight.bold),
-                    border: const OutlineInputBorder(),
+                const SizedBox(height: 16),
+                Center(
+                  child: SizedBox(
+                    width: 190,
+                    child: ElevatedButton(
+                      onPressed: _pickImage,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.teal,
+                        foregroundColor: Colors.white,
+                        textStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontFamily: _fontFamily,
+                        ),
+                      ),
+                      child: const Text('Upload Logo'),
+                    ),
                   ),
-                  style: TextStyle(fontFamily: _fontFamily, fontWeight: FontWeight.bold),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the token quantity';
-                    }
-                    _tokenQuantity = parseTokenQuantity(value);
-                    if (_tokenQuantity == null) {
-                      return 'Please enter a valid number';
-                    }
-                    if (_tokenQuantity! < 10000000) {
-                      return 'Minimum quantity is 10M tokens';
-                    }
-                    if (_tokenQuantity! > 2000000000) {
-                      return 'Maximum quantity is 2B tokens';
-                    }
-                    return null;
-                  },
                 ),
-              ),
-              const SizedBox(height: 30),
-              Center(
-                child: SizedBox(
-                  width: 208,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate() && _logoFileBytes != null) {
-                        final tokenQuantity = parseTokenQuantity(_tokenQuantityController.text);
-                        if (tokenQuantity != null) {
-                          bool safeImage = await checkImageSafety(_logoFileBytes!);
-                          if(!safeImage){
+                const SizedBox(height: 16),
+                if (_logoFileBytes != null)
+                  ClipOval(
+                    child: Image.memory(
+                      _logoFileBytes!,
+                      width: 125,
+                      height: 125,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                const SizedBox(height: 16),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 240),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextFormField(
+                        controller: _tokenQuantityController,
+                        decoration: InputDecoration(
+                          labelText: 'Number of tokens',
+                          labelStyle: TextStyle(
+                              fontFamily: _fontFamily,
+                              fontWeight: FontWeight.bold),
+                          border: const OutlineInputBorder(),
+                        ),
+                        style: TextStyle(
+                            fontFamily: _fontFamily,
+                            fontWeight: FontWeight.bold),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter the token quantity';
+                          }
+                          _tokenQuantity = parseTokenQuantity(value);
+                          if (_tokenQuantity == null) {
+                            return 'Please enter a valid number';
+                          }
+                          if (_tokenQuantity! < 10000000) {
+                            return 'Minimum quantity is 10M tokens';
+                          }
+                          if (_tokenQuantity! > 2000000000) {
+                            return 'Maximum quantity is 2B tokens';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 4),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 4.0),
+                        child: Text(
+                          "Enter a value between 10M and 2B tokens.",
+                          style: TextStyle(
+                            fontFamily: _fontFamily,
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                            color: Colors.grey[700],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 30),
+                Center(
+                  child: SizedBox(
+                    width: 208,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate() &&
+                            _logoFileBytes != null) {
+                          final tokenQuantity =
+                              parseTokenQuantity(_tokenQuantityController.text);
+                          if (tokenQuantity != null) {
+                            bool safeImage =
+                                await checkImageSafety(_logoFileBytes!);
+                            if (!safeImage) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text(
+                                        'Please use an appropriate image.')),
+                              );
+                            } else {
+                              // Upload logo to Arweave
+                              String metadataUri = await uploadToArweave(
+                                _logoFileBytes!, // Uint8List? logo file bytes
+                                _nameController.value.toString(),
+                                // Name of the token
+                                _symbolController.value.toString(),
+                                // Symbol of the token
+                                _fileExtension!,
+                                // File extension (e.g., "png", "jpg")
+                                _walletAddress!, // User's Phantom Wallet address
+                              );
+                              mintToken(
+                                  _nameController.value.toString(),
+                                  _symbolController.value.toString(),
+                                  metadataUri,
+                                  _tokenQuantity!,
+                                  _walletAddress!);
+                            }
+                          } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Please use an appropriate image.')),
+                              const SnackBar(
+                                  content: Text('Invalid token quantity')),
                             );
                           }
-                          else{
-                            // Upload logo to Arweave
-                            String metadataUri = await uploadToArweave(
-                              _logoFileBytes!,  // Uint8List? logo file bytes
-                              _nameController.value.toString(),        // Name of the token
-                              _symbolController.value.toString(),      // Symbol of the token
-                              _fileExtension!,    // File extension (e.g., "png", "jpg")
-                              _walletAddress!, // User's Phantom Wallet address
-                            );
-                            mintToken(_nameController.value.toString(), _symbolController.value.toString(), metadataUri, _tokenQuantity!, _walletAddress!);
-                          }
-                        } else {
+                        } else if (_logoFileBytes == null) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Invalid token quantity')),
+                            const SnackBar(
+                                content: Text('Please upload a logo.')),
                           );
                         }
-                      } else if (_logoFileBytes == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Please upload a logo.')),
-                        );
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.teal,
-                      foregroundColor: Colors.white,
-                      textStyle: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        fontFamily: _fontFamily,
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.teal,
+                        foregroundColor: Colors.white,
+                        textStyle: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          fontFamily: _fontFamily,
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
                       ),
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                    ),
-                    child: const Text('Mint Token'),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 520),
-                child: Center(
-                  child: Text(
-                    "Disclaimer: By clicking 'Mint Tokens', you will be sending 0.5% of tokens to this website. Any tokens sent to this website that are in violation of intellectual property rights will be burned.",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: _fontFamily,
-                      fontWeight: FontWeight.bold,
-                      fontStyle: FontStyle.italic,
+                      child: const Text('Mint Token'),
                     ),
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 16),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 520),
+                  child: Center(
+                    child: Text(
+                      "Fee: Upon minting, 0.5% of total tokens are sent to the token-mint treasury.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: _fontFamily,
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
