@@ -17,7 +17,7 @@ const {
   createCreateMetadataAccountV3Instruction,
 } = require("@metaplex-foundation/mpl-token-metadata");
 const fs = require("fs");
-const fetch = require("node-fetch"); // Ensure this package is installed
+//const fetch = require("node-fetch"); // Ensureno this package is installed
 
 async function fetchTreasuryPublicWalletAddress() {
   try {
