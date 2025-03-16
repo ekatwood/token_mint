@@ -406,7 +406,7 @@ class _TokenFactoryState extends State<TokenFactory> {
                   ),
                 ),
 
-                const SizedBox(height: 80),
+                const SizedBox(height: 120),
               ],
             ),
           ),
