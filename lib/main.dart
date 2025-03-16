@@ -46,6 +46,7 @@ class _TokenFactoryState extends State<TokenFactory> {
       TextEditingController();
   Uint8List? _logoFileBytes;
   final ImagePicker _picker = ImagePicker();
+  bool _walletConnected = false;
   String? _walletAddress;
   String? _fileExtension;
   int? _tokenQuantity;
@@ -146,12 +147,14 @@ class _TokenFactoryState extends State<TokenFactory> {
                   _walletAddress = await connectPhantom();
                   print(_walletAddress);
                   if (_walletAddress == 'error') {
+                    print('error connecting to phantom wallet');
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                           content: Text(
                               'Please make sure Phantom Wallet browser extension is installed.')),
                     );
                   } else {
+                    _walletConnected = true;
                     //add public wallet address to database if not already there
                     phantomWalletConnected(_walletAddress!);
                   }
@@ -321,31 +324,47 @@ class _TokenFactoryState extends State<TokenFactory> {
                                         'Please use an appropriate image.')),
                               );
                             } else {
-                              // Upload logo to Arweave
-                              String metadataUri = await uploadToArweave(
-                                _logoFileBytes!, // Uint8List? logo file bytes
-                                _nameController.value.toString(),
-                                // Name of the token
-                                _symbolController.value.toString(),
-                                // Symbol of the token
-                                _fileExtension!,
-                                // File extension (e.g., "png", "jpg")
-                                _walletAddress!, // User's Phantom Wallet address
-                              );
-                              if (metadataUri == 'error'){
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text(
-                                          'Uploading image or JSON to Arweave failed.')),
-                                );
+                              // connect to wallet if not already
+                              if(!_walletConnected){
+                                _walletAddress = await connectPhantom();
+                                if (_walletAddress == 'error') {
+                                  print('error connecting to phantom wallet');
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text(
+                                            'Please make sure Phantom Wallet browser extension is installed.')),
+                                  );
+                                }
+                                else
+                                  _walletConnected = true;
                               }
-                              else{
-                                // mintToken(
-                                //     _nameController.value.toString(),
-                                //     _symbolController.value.toString(),
-                                //     metadataUri,
-                                //     _tokenQuantity!,
-                                //     _walletAddress!);
+                              if(_walletConnected){
+                                // Upload logo to Arweave
+                                String metadataUri = await uploadToArweave(
+                                  _logoFileBytes!, // Uint8List? logo file bytes
+                                  _nameController.value.toString(),
+                                  // Name of the token
+                                  _symbolController.value.toString(),
+                                  // Symbol of the token
+                                  _fileExtension!,
+                                  // File extension (e.g., "png", "jpg")
+                                  _walletAddress!, // User's Phantom Wallet address
+                                );
+                                if (metadataUri == 'error'){
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text(
+                                            'Uploading image or JSON to Arweave failed.')),
+                                  );
+                                }
+                                else{
+                                  // mintToken(
+                                  //     _nameController.value.toString(),
+                                  //     _symbolController.value.toString(),
+                                  //     metadataUri,
+                                  //     _tokenQuantity!,
+                                  //     _walletAddress!);
+                                }
                               }
                             }
                           } else {
@@ -405,7 +424,6 @@ class _TokenFactoryState extends State<TokenFactory> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 120),
               ],
             ),

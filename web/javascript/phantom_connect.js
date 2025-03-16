@@ -3,7 +3,7 @@ async function connectPhantom() {
 
     if (!window.solana) {
         //console.error("Error connecting Phantom Wallet.");
-        return "Please make sure Phantom Wallet browser extension is installed.";
+        return "error";
     }
 
     // Connect to Phantom
