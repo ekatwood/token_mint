@@ -1,27 +1,24 @@
-//TODO: unit test this function on devnet
+// TODO: unit test this function on devnet
 
-const {
+import {
   Connection,
   Keypair,
   clusterApiUrl,
   PublicKey,
   Transaction,
   sendAndConfirmTransaction,
-} = require("@solana/web3.js");
-const {
+} from "@solana/web3.js";
+import {
   createMint,
   getOrCreateAssociatedTokenAccount,
   mintTo,
-} = require("@solana/spl-token");
-const {
-  createCreateMetadataAccountV3Instruction,
-} = require("@metaplex-foundation/mpl-token-metadata");
-const fs = require("fs");
-//const fetch = require("node-fetch"); // Ensureno this package is installed
+} from "@solana/spl-token";
+import { createCreateMetadataAccountV3Instruction } from "@metaplex-foundation/mpl-token-metadata";
+import fs from "fs/promises"; // Use promises for async reading
 
 async function fetchTreasuryPublicWalletAddress() {
   try {
-    const response = await fetch(" https://us-central1-token-mint-8f0e3.cloudfunctions.net/fetchTreasuryPublicWalletAddress");
+    const response = await fetch("https://us-central1-token-mint-8f0e3.cloudfunctions.net/fetchTreasuryPublicWalletAddress");
     const data = await response.json();
     return data.treasuryWalletAddress;
   } catch (error) {
@@ -35,9 +32,8 @@ async function mintToken(nameOfToken, symbol, metadataUri, totalNumTokens, userP
     const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
     console.log("Connected to Devnet");
 
-    const creatorKeypair = Keypair.fromSecretKey(
-      Uint8Array.from(JSON.parse(fs.readFileSync("asdf", "utf8")))
-    );
+    const secretKey = await fs.readFile("asdf", "utf8");
+    const creatorKeypair = Keypair.fromSecretKey(Uint8Array.from(JSON.parse(secretKey)));
 
     const treasuryWalletAddress = await fetchTreasuryPublicWalletAddress();
     const treasuryPublicKey = new PublicKey(treasuryWalletAddress);
@@ -60,12 +56,11 @@ async function mintToken(nameOfToken, symbol, metadataUri, totalNumTokens, userP
     console.log("Minted 99.5% of tokens to the user's wallet");
 
     const TOKEN_METADATA_PROGRAM_ID = new PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s");
-    const metadataPDAAndBump = PublicKey.findProgramAddressSync(
+    const [metadataPDA] = PublicKey.findProgramAddressSync(
       [Buffer.from("metadata"), TOKEN_METADATA_PROGRAM_ID.toBuffer(), tokenMint.toBuffer()],
       TOKEN_METADATA_PROGRAM_ID
     );
 
-    const metadataPDA = metadataPDAAndBump[0];
     const metadataData = {
       name: nameOfToken,
       symbol: symbol,
@@ -107,5 +102,3 @@ async function mintToken(nameOfToken, symbol, metadataUri, totalNumTokens, userP
     console.error("Error:", error);
   }
 }
-
-module.exports = { mintToken };

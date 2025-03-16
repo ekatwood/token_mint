@@ -122,8 +122,8 @@ class _TokenFactoryState extends State<TokenFactory> {
       appBar: AppBar(
         backgroundColor: Colors.tealAccent,
         elevation: 3,
-        shadowColor: Colors.teal,
-        toolbarHeight: 106,
+        shadowColor: Color(0x1DF7A0),
+        toolbarHeight: 84,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -135,7 +135,7 @@ class _TokenFactoryState extends State<TokenFactory> {
               clipBehavior: Clip.antiAlias,
               child: Image.asset(
                 'assets/logo.png',
-                height: 100,
+                height: 72,
               ),
             ),
             const Spacer(),
@@ -332,12 +332,21 @@ class _TokenFactoryState extends State<TokenFactory> {
                                 // File extension (e.g., "png", "jpg")
                                 _walletAddress!, // User's Phantom Wallet address
                               );
-                              mintToken(
-                                  _nameController.value.toString(),
-                                  _symbolController.value.toString(),
-                                  metadataUri,
-                                  _tokenQuantity!,
-                                  _walletAddress!);
+                              if (metadataUri == 'error'){
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text(
+                                          'Uploading image or JSON to Arweave failed.')),
+                                );
+                              }
+                              else{
+                                // mintToken(
+                                //     _nameController.value.toString(),
+                                //     _symbolController.value.toString(),
+                                //     metadataUri,
+                                //     _tokenQuantity!,
+                                //     _walletAddress!);
+                              }
                             }
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -356,7 +365,7 @@ class _TokenFactoryState extends State<TokenFactory> {
                         backgroundColor: Colors.teal,
                         foregroundColor: Colors.white,
                         textStyle: TextStyle(
-                          fontStyle: FontStyle.italic,
+                          //fontStyle: FontStyle.italic,
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                           fontFamily: _fontFamily,
@@ -371,17 +380,32 @@ class _TokenFactoryState extends State<TokenFactory> {
                 ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 520),
                   child: Center(
-                    child: Text(
-                      "Fee: Upon minting, 0.5% of total tokens are sent to the token-mint treasury.",
+                    child: RichText(
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: _fontFamily,
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: "Fee: 0.5% of tokens will be sent to the token-mint treasury. Good luck with your token, we hope it's a winner! ",
+                            style: TextStyle(
+                              fontFamily: _fontFamily,
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              color: Colors.black, // Ensure text color is set
+                            ),
+                          ),
+                          TextSpan(
+                            text: "🔥📈💸",
+                            style: TextStyle(
+                              fontFamily: 'NotoColorEmoji',
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ),
+
                 const SizedBox(height: 80),
               ],
             ),

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'firestore_functions.dart';
 import 'package:js/js.dart';
 import 'package:web/web.dart';
 
@@ -14,7 +15,7 @@ Future<String> uploadToArweave(
     String arweaveUrl = await uploadToArweaveJS(logoBytes, tokenName, tokenSymbol, fileExtension, walletAddress);
     return arweaveUrl;
   } catch (e) {
-    print('Error uploading to Arweave: $e');
-    throw Exception('Failed to upload logo and metadata to Arweave.');
+    errorLogger(e.toString(), 'uploadToArweave() in upload_to_Arweave.dart');
+    return 'error';
   }
 }
