@@ -24,4 +24,4 @@ To receive 50% equity in the website and receive 0.05% of tokens from minting (i
 
 If more than one person sends, I will send back to whoever wasn't first. But you can look it up here: https://explorer.solana.com/address/EAnhd395fYm16SgYvEGVhp1hhukVGb5oz7CwK6nBf4Mw
 
-<img width="1173" alt="Screenshot 2025-03-16 at 4 07 55 PM" src="https://github.com/user-attachments/assets/3e1bf8ba-3ec2-4ea3-83f0-b38c7c49fce8" />
+<img width="1173" alt="Screenshot 2025-03-16 at 4 16 38 PM" src="https://github.com/user-attachments/assets/9ed340c7-c795-4327-a709-0ba65ba835eb" />
