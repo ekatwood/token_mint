@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -52,6 +54,15 @@ class _TokenFactoryState extends State<TokenFactory> {
   int? _tokenQuantity;
 
   String _fontFamily = 'SourceCodePro';
+
+  // check form input max length
+  bool isValidTokenName(String name) {
+    return utf8.encode(name).length <= 32;
+  }
+
+  bool isValidTokenSymbol(String symbol) {
+    return utf8.encode(symbol).length <= 10;
+  }
 
   // Helper function to parse token quantities with M/B notation
   int? parseTokenQuantity(String input) {
@@ -145,9 +156,7 @@ class _TokenFactoryState extends State<TokenFactory> {
               child: GestureDetector(
                 onTap: () async {
                   _walletAddress = await connectPhantom();
-                  print(_walletAddress);
                   if (_walletAddress == 'error') {
-                    print('error connecting to phantom wallet');
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                           content: Text(
@@ -199,6 +208,11 @@ class _TokenFactoryState extends State<TokenFactory> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter the token name';
                       }
+
+                      if(!isValidTokenName(value)){
+                        return 'Name exceeds maximum length of characters';
+                      }
+
                       return null;
                     },
                   ),
@@ -220,6 +234,11 @@ class _TokenFactoryState extends State<TokenFactory> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter the symbol';
                       }
+
+                      if(!isValidTokenSymbol(value)){
+                        return 'Symbol exceeds maximum length of characters';
+                      }
+
                       return null;
                     },
                   ),
@@ -275,6 +294,7 @@ class _TokenFactoryState extends State<TokenFactory> {
                             return 'Please enter the token quantity';
                           }
                           _tokenQuantity = parseTokenQuantity(value);
+                          print(_tokenQuantity);
                           if (_tokenQuantity == null) {
                             return 'Please enter a valid number';
                           }
@@ -328,7 +348,6 @@ class _TokenFactoryState extends State<TokenFactory> {
                               if(!_walletConnected){
                                 _walletAddress = await connectPhantom();
                                 if (_walletAddress == 'error') {
-                                  print('error connecting to phantom wallet');
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         content: Text(
@@ -339,7 +358,7 @@ class _TokenFactoryState extends State<TokenFactory> {
                                   _walletConnected = true;
                               }
                               if(_walletConnected){
-                                // Upload logo to Arweave
+                                //Upload logo to Arweave
                                 String metadataUri = await uploadToArweave(
                                   _logoFileBytes!, // Uint8List? logo file bytes
                                   _nameController.value.toString(),
@@ -404,7 +423,7 @@ class _TokenFactoryState extends State<TokenFactory> {
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: "Fee: 0.5% of tokens will be sent to the token-mint treasury. Good luck with your token, we hope it's a winner! ",
+                            text: "Fee: 0.1% of tokens will be sent to the token-mint treasury. Good luck with your token, we hope it's a winner! ",
                             style: TextStyle(
                               fontFamily: _fontFamily,
                               fontWeight: FontWeight.bold,
