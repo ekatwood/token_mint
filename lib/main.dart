@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -155,7 +154,13 @@ class _TokenFactoryState extends State<TokenFactory> {
               padding: const EdgeInsets.only(right: 14.0),
               child: GestureDetector(
                 onTap: () async {
-                  _walletAddress = await connectPhantom();
+                  if(_walletConnected == true){
+                    _walletAddress = await openPhantomIfConnected();
+                    print(_walletAddress);
+                  }
+                  else{
+                    _walletAddress = await connectPhantom();
+                  }
                   if (_walletAddress == 'error') {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -165,7 +170,7 @@ class _TokenFactoryState extends State<TokenFactory> {
                   } else {
                     _walletConnected = true;
                     //add public wallet address to database if not already there
-                    phantomWalletConnected(_walletAddress!);
+                    //phantomWalletConnected(_walletAddress!);
                   }
                 },
                 child: Container(
@@ -423,7 +428,7 @@ class _TokenFactoryState extends State<TokenFactory> {
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: "Fee: 0.1% of tokens will be sent to the token-mint treasury. Good luck with your token, we hope it's a winner! ",
+                            text: "Fee: 2% of tokens go to the token-mint treasury vault. Users just might randomly get an airdrop once in a while! Good luck with your token, we hope it's a winner! ",
                             style: TextStyle(
                               fontFamily: _fontFamily,
                               fontWeight: FontWeight.bold,

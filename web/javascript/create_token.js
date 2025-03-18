@@ -46,14 +46,14 @@ async function mintToken(nameOfToken, symbol, metadataUri, totalNumTokens, userP
     const userTokenAccount = await getOrCreateAssociatedTokenAccount(connection, creatorKeypair, tokenMint, userPublicKey);
     const treasuryTokenAccount = await getOrCreateAssociatedTokenAccount(connection, creatorKeypair, tokenMint, treasuryPublicKey);
 
-    const treasuryShare = Math.floor(totalNumTokens * 0.005 * 10 ** decimals);
-    const userShare = Math.floor(totalNumTokens * 0.995 * 10 ** decimals);
+    const treasuryShare = Math.floor(totalNumTokens * 0.02 * 10 ** decimals);
+    const userShare = Math.floor(totalNumTokens * 0.98 * 10 ** decimals);
 
     await mintTo(connection, creatorKeypair, tokenMint, treasuryTokenAccount.address, creatorKeypair, treasuryShare);
-    console.log("Minted 0.5% of tokens to the treasury wallet");
+    console.log("Minted 2% of tokens to the treasury wallet");
 
     await mintTo(connection, creatorKeypair, tokenMint, userTokenAccount.address, creatorKeypair, userShare);
-    console.log("Minted 99.5% of tokens to the user's wallet");
+    console.log("Minted 98% of tokens to the user's wallet");
 
     const TOKEN_METADATA_PROGRAM_ID = new PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s");
     const [metadataPDA] = PublicKey.findProgramAddressSync(
