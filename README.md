@@ -6,7 +6,7 @@ Pick the name, symbol, logo image, and description (optional) for your cryptocur
 
 Pay the transaction fees using SOL. The website keeps a fee of 2% of token supply minted, which will be automatically staked.
 
-You can also opt-in to random airdrops from the token-mint treasury, as well as enroll in email notifications about upcoming and popular token auctions.
+You can opt-in to random airdrops from the token-mint treasury, as well as sign up for email notifications about upcoming and popular token auctions. You can set the email broadcast frequency between once a day, once a week, and once a month, or turn it off at any time.
 
 We hope you make a winner!
 
