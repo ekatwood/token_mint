@@ -4,7 +4,7 @@ Mint your own Solana Program Library (SPL) token, for the cost of a few Solana a
 
 Pick the name, symbol, logo image, and description (optional) for your cryptocurrency.
 
-Pay the transaction fees using SOL. The website keeps a fee of 2% of tokens, which will be automatically staked.
+Pay the transaction fees using SOL. The website keeps a fee of 2% of token supply minted, which will be automatically staked.
 
 You can also opt-in to random airdrops from the token-mint treasury, as well as enroll in email notifications about upcoming and popular token auctions.
 
