@@ -2,9 +2,11 @@
 
 Mint your own Solana Program Library (SPL) token, for the cost of a few Solana and Arweave blockchain transactions.
 
-Pick the name, symbol and logo image for your cryptocurrency.
+Pick the name, symbol, logo image, and description (optional) for your cryptocurrency.
 
-Pay the transaction fees in SOL, and the website also keeps a fee of 2% of tokens. And you just might randomly get an airdrop once in a while from the treasury vault.
+Pay the transaction fees using SOL. The website keeps a fee of 2% of tokens, which will be automatically staked.
+
+You can also opt-in to random airdrops from the token-mint treasury, as well as enroll in email notifications about upcoming and popular token auctions.
 
 We hope you make a winner!
 
