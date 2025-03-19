@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:token_mint/settings.dart';
 import 'package:token_mint/upload_to_Arweave.dart';
 import 'phantom_wallet.dart';
 import 'create_token.dart';
@@ -47,7 +48,7 @@ class _TokenFactoryState extends State<TokenFactory> {
       TextEditingController();
   Uint8List? _logoFileBytes;
   final ImagePicker _picker = ImagePicker();
-  bool _walletConnected = false;
+  bool _walletConnected = true;
   String? _walletAddress;
   String? _fileExtension;
   int? _tokenQuantity;
@@ -196,6 +197,25 @@ class _TokenFactoryState extends State<TokenFactory> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                if (_walletConnected) // Only show the button when the wallet is connected
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10, right: 10),
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => SettingsPage()),
+                          );
+                        },
+                        child: Text(
+                          'Settings',
+                          style: TextStyle(fontSize: 16, color: Colors.blue),
+                        ),
+                      ),
+                    ),
+                  ),
                 const SizedBox(height: 30),
                 ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 320),
@@ -264,6 +284,17 @@ class _TokenFactoryState extends State<TokenFactory> {
                       ),
                       child: const Text('Upload Logo'),
                     ),
+                  ),
+                ),
+                const SizedBox(height: 7), // Optional: Adds space between the button and text
+                Text(
+                  'Recommended dimensions: 500x500 px',
+                  style: TextStyle(
+                    fontFamily: _fontFamily,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                    color: Colors.grey[700],
                   ),
                 ),
                 const SizedBox(height: 16),
