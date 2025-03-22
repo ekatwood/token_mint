@@ -48,7 +48,7 @@ class _TokenFactoryState extends State<TokenFactory> {
       TextEditingController();
   Uint8List? _logoFileBytes;
   final ImagePicker _picker = ImagePicker();
-  bool _walletConnected = true;
+  bool _walletConnected = false;
   String? _walletAddress;
   String? _fileExtension;
   int? _tokenQuantity;
@@ -156,8 +156,8 @@ class _TokenFactoryState extends State<TokenFactory> {
               child: GestureDetector(
                 onTap: () async {
                   if(_walletConnected == true){
-                    _walletAddress = await openPhantomIfConnected();
-                    print(_walletAddress);
+                    print('opening wallet again');
+                    await openPhantomIfConnected();
                   }
                   else{
                     _walletAddress = await connectPhantom();

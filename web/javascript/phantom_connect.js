@@ -18,6 +18,7 @@ async function connectPhantom() {
     }
 
 async function openPhantomIfConnected() {
+  console.log('openPhantomIfConnected');
   if (!window.solana) {
     console.error("Phantom Wallet is not installed.");
     return "error";
@@ -26,10 +27,10 @@ async function openPhantomIfConnected() {
   try {
     // Attempt to connect to Phantom
     const resp = await window.solana.connect({ onlyIfTrusted: true });
-    const publicKey = resp.publicKey.toString();
+
     // Open Phantom Wallet
     window.open('https://phantom.app/', '_blank');
-    return publicKey;
+    return 'connected';
   } catch (err) {
     console.error("User is not logged in or connection failed.");
     return "not_connected";

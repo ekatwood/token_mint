@@ -16,14 +16,14 @@ Future<String> connectPhantom() async {
 }
 
 
-Future<String> openPhantomIfConnected() async {
+Future<void> openPhantomIfConnected() async {
   try {
     final result = await js_util.promiseToFuture<String>(
       js_util.callMethod(html.window, 'openPhantomIfConnected', []),
     );
-    return result;
+    return;
   } catch (e) {
     // Handle error appropriately
-    return 'error';
+    return;
   }
 }
