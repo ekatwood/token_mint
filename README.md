@@ -2,9 +2,11 @@
 
 Mint your own Solana Program Library (SPL) token, for the cost of a few Solana and Arweave blockchain transactions.
 
-Pick the name, symbol and logo image for your cryptocurrency.
+Pick the name, symbol, logo image, and description (optional) for your cryptocurrency.
 
-Pay the transaction fees in SOL, and the website also keeps a fee of 2% of tokens. And you just might randomly get an airdrop once in a while from the treasury vault.
+Pay the transaction fees using SOL. The website keeps a fee of 2% of token supply minted, which will be automatically staked.
+
+You can opt-in to random airdrops from the token-mint treasury, as well as sign up for email notifications about upcoming and popular token auctions. You can set the email broadcast frequency between once a day, once a week, and once a month, or turn it off at any time.
 
 We hope you make a winner!
 
@@ -22,4 +24,6 @@ To receive 50% equity in the website and receive 1% of tokens from minting (inve
 
 If more than one person sends, I will send back to whoever wasn't first. But you can look it up here: https://explorer.solana.com/address/EAnhd395fYm16SgYvEGVhp1hhukVGb5oz7CwK6nBf4Mw
 
-<img width="1173" alt="Screenshot 2025-03-17 at 4 09 31 PM" src="https://github.com/user-attachments/assets/397a6736-edf3-4c5d-a45b-69138b9ea0a6" />
+<img width="360" alt="Screenshot 2025-03-19 at 12 15 48 PM" src="https://github.com/user-attachments/assets/e990e5f9-f0de-4aea-af00-a1818cd460bc" />
+<img width="360" alt="Screenshot 2025-03-19 at 12 16 45 PM" src="https://github.com/user-attachments/assets/97d812d8-6123-42e3-9091-a654a9cd2383" />
+<img width="360" alt="Screenshot 2025-03-19 at 12 17 15 PM" src="https://github.com/user-attachments/assets/4d1c2e7a-4080-4dd6-8fac-58e6accb81d1" />
