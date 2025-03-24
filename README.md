@@ -34,4 +34,5 @@ Here are some screenshots of the front end token factory page:
 
 <img width="1171" alt="Screenshot 2025-03-24 at 11 31 57 AM" src="https://github.com/user-attachments/assets/d8f6268d-69f3-4e5e-b9bf-acd74f421f2c" />
 <img width="353" alt="Screenshot 2025-03-24 at 11 34 16 AM" src="https://github.com/user-attachments/assets/00d8c81d-9c3a-48be-b761-287397135e72" />
+<img width="353" alt="Screenshot 2025-03-24 at 11 40 40 AM" src="https://github.com/user-attachments/assets/0d68bc7a-fda5-4e26-a4b4-4989febb2502" />
 
