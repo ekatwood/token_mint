@@ -8,7 +8,7 @@ You can customize your token; you upload the name, symbol, logo image, and optio
 
 The website keeps 2% of the token supply minted, and it is automatically staked to Solana blockchain.
 
-A big worry for users in the blockchain space is a 'rug pull' event. That happens when the people in charge or the project reserve too much of the token supply for people early in the project. The token goes live, and they sell a huge amount of tokens, causing the price to dip down considerably.
+A big worry for users in the blockchain space is a 'rug pull' event. That happens when the people in charge of the project reserve too much of the token supply for people early in the project. The token goes live, and they sell a huge amount of tokens, causing the price to dip down considerably.
 
 token-mint.io only keeps 2% of tokens as a fee, which would not really affect the price if they were sold.
 
@@ -18,7 +18,7 @@ So token-mint.io has a vested interest in the success of your token, and the tok
 
 Another interesting aspect of the token-mint treasury vault is that users can opt-in to random airdrops from the vault, that will be carefully selected.
 
-And since the tokens are staked, the airdrops can be the staking rewards, creating a sustainable flow of intersting airdrops for the user.
+And since the tokens are staked, the airdrops can be the staking rewards, creating a sustainable flow of interesting airdrops for the user.
 
 There will be support for users to have an auction for any percentage % of their token supply, in either SOL, RAY, or USDC.
 
