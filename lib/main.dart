@@ -140,14 +140,12 @@ class _TokenFactoryState extends State<TokenFactory> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(width: 24),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              clipBehavior: Clip.antiAlias,
+            ClipOval(
               child: Image.asset(
                 'assets/logo.png',
                 height: 72,
+                width: 72, // Ensure the width and height are the same for a perfect circle
+                fit: BoxFit.cover, // Ensures the image fills the circular area properly
               ),
             ),
             const Spacer(),
@@ -459,7 +457,7 @@ class _TokenFactoryState extends State<TokenFactory> {
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: "Fee: 2% of tokens go to the token-mint treasury vault. Users just might randomly get an airdrop once in a while! Good luck with your token, we hope it's a winner! ",
+                            text: "2% of token supply minted goes to the token-mint treasury vault and is automatically staked to Solana blockchain. Staking rewards will be randomly airdropped to users who opt-in to receiving airdrops. Good luck with your token, we hope you make a winner! ",
                             style: TextStyle(
                               fontFamily: _fontFamily,
                               fontWeight: FontWeight.bold,
