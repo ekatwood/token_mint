@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:token_mint/phantom_ghost_button.dart';
 import 'package:token_mint/settings.dart';
 import 'package:token_mint/upload_to_Arweave.dart';
 import 'phantom_wallet.dart';
@@ -177,10 +178,7 @@ class _TokenFactoryState extends State<TokenFactory> {
                     borderRadius: BorderRadius.circular(5),
                   ),
                   clipBehavior: Clip.antiAlias,
-                  child: Image.asset(
-                    'assets/phantom-logo.png',
-                    height: 40,
-                  ),
+                  child: PhantomGhostButton(size: 55),
                 ),
               ),
             ),
