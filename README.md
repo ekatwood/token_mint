@@ -1,8 +1,8 @@
 # token-mint
 
-Mint customizable Solana tokens for just the transaction fees.
+Mint customizable Solana tokens for just the price of the transaction fees (a few transactions on Solana and Arweave, both payable with SOL). The transaction fees should be <$5 and probably around $1.
 
-3% of tokens are sent to the token-mint treasury vault and staked for 6 months.
+3% of tokens are sent to the token-mint treasury vault as a fee and staked for 6 months.
 
 97% of tokens are sent to your Phantom Wallet public Solana wallet address.
 
