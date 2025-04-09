@@ -2,9 +2,10 @@
 
 Mint customizable Solana tokens for just the transaction fees.
 
-99.9% of tokens are sent to your Phantom Wallet public Solana wallet address.
+3% of tokens are sent to the token-mint treasury vault and staked for 6 months.
 
-0.1% of tokens are sent to the token-mint treasury vault, and automatically staked.
+97% of tokens are sent to your Phantom Wallet public Solana wallet address.
+
 
 Other features:
 
