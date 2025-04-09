@@ -24,5 +24,8 @@ Unit testing smart contracts and JavaScript
 <img width="353" alt="Screenshot 2025-03-24 at 11 34 16 AM" src="https://github.com/user-attachments/assets/00d8c81d-9c3a-48be-b761-287397135e72" />
 <img width="353" alt="Screenshot 2025-03-24 at 11 40 40 AM" src="https://github.com/user-attachments/assets/0d68bc7a-fda5-4e26-a4b4-4989febb2502" />
 
-To contribute to the development of this project, send SOL to EAnhd395fYm16SgYvEGVhp1hhukVGb5oz7CwK6nBf4Mw
+
+To invest in this project and receive 5% of tokens in the treasury vault, send 250 SOL to: EAnhd395fYm16SgYvEGVhp1hhukVGb5oz7CwK6nBf4Mw
+
+Check to see if anyone has sent yet: https://solscan.io/account/EAnhd395fYm16SgYvEGVhp1hhukVGb5oz7CwK6nBf4Mw
 
