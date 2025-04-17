@@ -29,3 +29,4 @@ To invest in this project and receive 5% of tokens in the treasury vault, send 2
 
 Check to see if anyone has sent yet: https://solscan.io/account/EAnhd395fYm16SgYvEGVhp1hhukVGb5oz7CwK6nBf4Mw
 
+Disclaimer: this project will not sell any tokens sent to the treasury that are in violation of intellectual property rights. Any tokens that are in violation of intellectual property rights will be 'burned' and sent to a wallet address where they can't be accessed.
