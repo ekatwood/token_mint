@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'phantom_ghost_button.dart'; // Make sure this exists or stub it
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final Future<String> Function() connectPhantom;
