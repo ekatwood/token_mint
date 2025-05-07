@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'appbar.dart';
 import 'auth_provider.dart';
 
 void main() {
@@ -57,10 +58,7 @@ class _TokenMintState extends State<TokenMint> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Token Mint'), // Title of the app bar.
-        centerTitle: true, // Center the title.
-      ),
+      appBar: CustomAppBar(),
       // The main content of the screen.
       body: Center(
         child: Column(
