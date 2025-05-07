@@ -1,150 +1,88 @@
-import 'dart:convert';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:token_mint/settings.dart';
-import 'package:token_mint/upload_to_Arweave.dart';
-import 'create_token.dart';
-import 'firestore_functions.dart';
-import 'firebase_options.dart';
-import 'safesearch_api.dart';
-import 'dart:typed_data';
-import 'package:path/path.dart' as path;
-import 'appbar.dart';
-// Import ProjectSmallView once implemented
-// import 'project_small_view.dart';
+import 'package:provider/provider.dart';
+import 'auth_provider.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const TokenMint());
+void main() {
+  runApp(// Provide the AuthProvider to the entire application.
+    ChangeNotifierProvider(
+      create: (context) => AuthProvider(),
+      child: const TokenMintApp(),
+    ),);
 }
 
-class TokenMint extends StatelessWidget {
-  const TokenMint({super.key});
+// The main application class.  This is the root widget of your app.
+class TokenMintApp extends StatelessWidget {
+  const TokenMintApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'token-mint',
+      title: 'Token Mint App', // The title of the app.
+      // Theme settings for the app.  This controls the visual appearance.
       theme: ThemeData(
-        useMaterial3: true,
+        primarySwatch: Colors.blue, // Primary color for the app.
+        fontFamily: 'Roboto', // Default font family.
+        //  You can customize the textTheme further, if needed.
+        textTheme: const TextTheme(
+          bodyMedium: TextStyle(fontSize: 16.0), // Default body text style.
+        ),
       ),
-      home: const TokenFeed(),
+      // The home screen of the app.
+      home: const TokenMint(),
     );
   }
 }
 
-class TokenFeed extends StatefulWidget {
-  const TokenFeed({Key? key}) : super(key: key);
+// The main screen of the application.  This is a stateful widget.
+// because it will likely need to manage some state.
+class TokenMint extends StatefulWidget {
+  const TokenMint({super.key});
 
   @override
-  _TokenFeedState createState() => _TokenFeedState();
+  _TokenMintState createState() => _TokenMintState();
 }
 
-class _TokenFeedState extends State<TokenFeed> {
-  final List<String> timeframes = ['Day', 'Week', 'Month', '6 Months', 'All Time'];
-  String selectedTimeframe = 'Day';
-  int currentPage = 0;
-  final int projectsPerPage = 15;
+// The state class for the TokenMint widget.
+class _TokenMintState extends State<TokenMint> {
+  int _counter = 0; // A counter variable to demonstrate state management.
 
-  // Placeholder for project data; replace with actual data retrieval logic
-  final List<String> allProjects = List.generate(100, (index) => 'MintAddress$index');
-
-  List<String> get paginatedProjects {
-    final start = currentPage * projectsPerPage;
-    final end = (start + projectsPerPage).clamp(0, allProjects.length);
-    return allProjects.sublist(start, end);
-  }
-
-  void loadMoreProjects() {
-    if ((currentPage + 1) * projectsPerPage < allProjects.length) {
-      setState(() {
-        currentPage++;
-      });
-    }
-  }
-
-  void onTimeframeChanged(String? newValue) {
-    if (newValue != null) {
-      setState(() {
-        selectedTimeframe = newValue;
-        currentPage = 0;
-        // Implement data fetching based on the selected timeframe
-      });
-    }
+  // This method is called when the '+' button is pressed.
+  void _incrementCounter() {
+    setState(() {
+      // This tells Flutter to rebuild the widget with the new value of _counter.
+      _counter++;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      appBar: AppBar(
+        title: const Text('Token Mint'), // Title of the app bar.
+        centerTitle: true, // Center the title.
+      ),
+      // The main content of the screen.
+      body: Center(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          mainAxisAlignment: MainAxisAlignment.center, // Center the content vertically.
+          children: <Widget>[
             const Text(
-              'Mint a Solana token for just the price of the transaction fees!',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              'Click the button to increment the counter:', // Instructions text.
+              style: TextStyle(fontSize: 18.0),
             ),
-            const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: () {
-                // Navigate to the mint token page
-              },
-              child: const Text('Mint Token'),
-            ),
-            const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Most Liked Projects',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                ),
-                DropdownButton<String>(
-                  value: selectedTimeframe,
-                  onChanged: onTimeframeChanged,
-                  items: timeframes.map((String timeframe) {
-                    return DropdownMenuItem<String>(
-                      value: timeframe,
-                      child: Text(timeframe),
-                    );
-                  }).toList(),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Expanded(
-              child: ListView.builder(
-                itemCount: paginatedProjects.length + 1,
-                itemBuilder: (context, index) {
-                  if (index < paginatedProjects.length) {
-                    final mintAddress = paginatedProjects[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Placeholder(
-                        fallbackHeight: 80,
-                        color: Colors.blueAccent,
-                        strokeWidth: 2,
-                      ),
-                      // Replace Placeholder with:
-                      // ProjectSmallView(mintAddress: mintAddress),
-                    );
-                  } else {
-                    return Center(
-                      child: ElevatedButton(
-                        onPressed: loadMoreProjects,
-                        child: const Text('Load More'),
-                      ),
-                    );
-                  }
-                },
-              ),
+            const SizedBox(height: 10), // Add some space between the text and the counter.
+            Text(
+              '$_counter', // Display the current value of the counter.
+              style: const TextStyle(fontSize: 48.0, fontWeight: FontWeight.bold),
             ),
           ],
         ),
+      ),
+      // Floating action button to increment the counter.
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter, // Call the _incrementCounter method when pressed.
+        tooltip: 'Increment', // Tooltip for the button.
+        child: const Icon(Icons.add), // Icon for the button.
       ),
     );
   }

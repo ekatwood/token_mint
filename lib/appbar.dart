@@ -1,178 +1,159 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart'; // Import for routing
+import 'auth_provider.dart'; // Import the AuthProvider
 
-class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
-  final Future<String> Function() connectPhantom;
-  final Future<void> Function() openPhantomIfConnected;
-  final void Function()? onDisconnect;
-
-  const CustomAppBar({
-    super.key,
-    required this.connectPhantom,
-    required this.openPhantomIfConnected,
-    this.onDisconnect,
-  });
-
-  @override
-  State<CustomAppBar> createState() => _CustomAppBarState();
-
-  @override
-  Size get preferredSize => const Size.fromHeight(84);
+// Placeholder for the solflare SDK and wallet connection logic.
+// In a real application, this would be in a separate file.
+// For this example, we'll just define a placeholder function.
+// We've modified it to return a wallet address.
+Future<String?> connectWallet() async {
+  // Simulate connecting to a wallet.  Replace this with your actual Solflare SDK call.
+  print("Connecting to Solflare wallet...");
+  // Simulate a successful connection after a short delay.
+  await Future.delayed(const Duration(seconds: 1));
+  print("Wallet connected!");
+  // Simulate a wallet address being returned.
+  const simulatedWalletAddress = '0x1234567890abcdef'; //  REPLACE THIS
+  return simulatedWalletAddress; // Return the simulated address.
 }
 
-class _CustomAppBarState extends State<CustomAppBar> {
-  bool _walletConnected = false;
-  String? _walletAddress;
-  bool _dropdownOpen = false;
+// AppBar widget with dynamic content.
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  // Constructor for the CustomAppBar.
+  const CustomAppBar({super.key});
 
-  void _handleWalletTap() async {
-    if (_walletConnected) {
-      setState(() {
-        _dropdownOpen = !_dropdownOpen;
-      });
-    } else {
-      final address = await widget.connectPhantom();
-      if (!mounted) return;
-      if (address == 'error') {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Please make sure Phantom Wallet browser extension is installed.'),
-          ),
-        );
-      } else {
-        setState(() {
-          _walletConnected = true;
-          _walletAddress = address;
-          _dropdownOpen = true;
-        });
-      }
-    }
-  }
-
-  void _disconnectWallet() {
-    setState(() {
-      _walletConnected = false;
-      _walletAddress = null;
-      _dropdownOpen = false;
-    });
-    if (widget.onDisconnect != null) {
-      widget.onDisconnect!();
-    }
-  }
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight); // Set the preferred height.
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        AppBar(
-          backgroundColor: Colors.tealAccent,
-          elevation: 3,
-          shadowColor: const Color(0x1DF7A0),
-          toolbarHeight: 84,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(width: 24),
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushNamed('/'); // Home navigation
-                },
-                child: ClipOval(
-                  child: Image.asset(
-                    'assets/logo.png',
-                    height: 72,
-                    width: 72,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              const Spacer(),
-              Padding(
-                padding: const EdgeInsets.only(right: 14.0),
-                child: GestureDetector(
-                  onTap: _handleWalletTap,
-                  child: _walletConnected
-                      ? Image.asset(
-                    'assets/dropdown-menu.png',
-                    width: 55,
-                    height: 55,
-                  )
-                      : Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    clipBehavior: Clip.antiAlias,
-                    child: PhantomGhostButton(size: 55),
-                  ),
-                ),
-              ),
-            ],
+    // Access the AuthProvider using Provider.of.
+    final authProvider = Provider.of<AuthProvider>(context);
+    final isLoggedIn = authProvider.isLoggedIn;
+
+    return AppBar(
+      backgroundColor: Colors.blue, // Set the background color of the AppBar.
+      leading: Padding(
+        padding: const EdgeInsets.all(8.0), // Add some padding around the logo.
+        child: GestureDetector(
+          onTap: () {
+            // Use go_router to navigate to the home route.
+            context.go('/'); // Navigate to the root route
+          },
+          child: Image.asset(
+            'assets/logo.png', // Path to your logo image.
+            width: 40, // Set the width of the logo.
+            height: 40, // Set the height of the logo.
           ),
         ),
-        if (_dropdownOpen)
-          Positioned(
-            top: 84,
-            right: 14,
-            child: Material(
-              elevation: 4,
-              borderRadius: BorderRadius.circular(8),
-              color: Colors.white,
-              child: Container(
-                width: 200,
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildDropdownItem('Your Projects', () {
-                      // TODO: Implement navigation or callback
-                    }),
-                    _buildDropdownItem('Liked Projects', () {
-                      // TODO
-                    }),
-                    _buildDropdownItem('Mint Token', () {
-                      // TODO
-                    }),
-                    const Padding(
-                      padding: EdgeInsets.fromLTRB(12, 12, 12, 4),
-                      child: Text(
-                        'Wallet',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                    _buildDropdownItem('Open', () async {
-                      await widget.openPhantomIfConnected();
-                      setState(() {
-                        _dropdownOpen = false;
-                      });
-                    }),
-                    _buildDropdownItem('Disconnect', () {
-                      _disconnectWallet();
-                    }),
-                  ],
-                ),
-              ),
-            ),
-          ),
+      ),
+      leadingWidth: 60, // Set the width of the leading widget.
+      title: const Text('MOONROCKET'), // Title of the AppBar.
+      centerTitle: true, // Center the title.
+      actions: [
+        // Use a ternary operator to display different widgets based on the login state.
+        if (isLoggedIn)
+          _buildLoggedInActions(context, authProvider) // Pass authProvider
+        else
+          _buildLoggedOutAction(context, authProvider), // Pass authProvider
       ],
     );
   }
 
-  Widget _buildDropdownItem(String title, VoidCallback onTap) {
-    return InkWell(
-      onTap: onTap,
+  // Widget for when the user is logged in.
+  Widget _buildLoggedInActions(BuildContext context, AuthProvider authProvider) {
+    return PopupMenuButton<String>(
+      // Use a builder to get the context for the PopupMenuButton.
+      itemBuilder: (BuildContext context) {
+        return [
+          const PopupMenuItem<String>(
+            value: 'mint_token',
+            child: Text('Mint Token'),
+          ),
+          const PopupMenuItem<String>(
+            value: 'my_projects',
+            child: Text('My Projects'),
+          ),
+          PopupMenuItem<String>(
+            value: 'disconnect_wallet',
+            child: Text('Disconnect Wallet'),
+          ),
+        ];
+      },
+      onSelected: (String value) {
+        // Handle the selected menu item.
+        switch (value) {
+          case 'mint_token':
+          // Navigate to mint token page.
+          //  Use go_router to navigate.
+            context.go('/mint_token'); // Example route
+            break;
+          case 'my_projects':
+          // Navigate to my projects page.
+            context.go('/my_projects');
+            break;
+          case 'disconnect_wallet':
+          // Call the logout method from the AuthProvider.
+            authProvider.logout();
+            break;
+        }
+      },
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        child: Text(
-          title,
-          style: const TextStyle(fontSize: 14),
+        padding: const EdgeInsets.all(8.0),
+        child: Row( // Display Wallet Address
+          children: [
+            const Icon(Icons.arrow_drop_down), // Dropdown menu icon.
+            const SizedBox(width: 8),
+            Text(
+              _truncateWalletAddress(authProvider.walletAddress), // Show Address
+              style: const TextStyle(fontSize: 12), // Adjust size as needed
+            ),
+          ],
         ),
       ),
     );
   }
+
+  // Widget for when the user is not logged in.
+  Widget _buildLoggedOutAction(BuildContext context, AuthProvider authProvider) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: GestureDetector(
+        onTap: () async {
+          final walletAddress =
+          await connectWallet(); //  Call your connectWallet function
+          // Simulate a successful connection.
+          if (walletAddress != null) {
+            authProvider.login(
+                walletAddress); // Update the state using the provider.
+          } else {
+            // Handle the error.  Show a message to the user.
+            print('Failed to connect wallet'); //  Important
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Failed to connect wallet.'),
+                duration: Duration(seconds: 5),
+              ),
+            );
+          }
+        },
+        child: SvgPicture.asset(
+          'assets/solflare_logo.svg',
+          width: 30,
+          height: 30,
+        ),
+      ),
+    );
+  }
+
+  // Helper function to truncate wallet address
+  String _truncateWalletAddress(String address) {
+    if (address.length > 10) {
+      return '${address.substring(0, 6)}...${address.substring(address.length - 4)}';
+    }
+    return address;
+  }
 }
+
