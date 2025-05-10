@@ -3,21 +3,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'auth_provider.dart';
+import 'dart:js_util' as js_util;
+import 'dart:html' as html;
+//import 'package:solana_web3/solana_web3.dart'; // Import Solana types
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 import 'package:js/js.dart';
-import 'dart:async';
-
-@JS('solflare')
-class Solflare {
-  external static Future<dynamic> connect(ConnectOptions? options);
-  external static dynamic isConnected();
-  external static dynamic disconnect();
-}
-
-@JS()
-class ConnectOptions {
-  external factory ConnectOptions([String? network]); // Changed to optional positional
-  external String network;
-}
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
@@ -84,7 +75,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             context.go('/my_projects');
             break;
           case 'disconnect_wallet':
-            authProvider.logout();
+            disconnectWallet(authProvider);
             break;
         }
       },
@@ -104,22 +95,56 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
+  void disconnectWallet(AuthProvider authProvider) async {
+    try {
+      final result = await js_util.promiseToFuture(
+        js_util.callMethod(html.window, 'disconnectSolflare', []),
+      );
+      if (result is Map && result.containsKey('error')) {
+        // Handle error
+        print("Disconnect error: ${result['error']}");
+        // Show error message to the user if necessary
+        return;
+      }
+      authProvider.logout();
+    } catch (e) {
+      print("Error disconnecting wallet: $e");
+      //  firestoreLogger(e.toString(), 'disconnectWallet()'); // Removed firestore_functions
+      // Show error message to the user
+    }
+  }
+
   Widget _buildLoggedOutAction(BuildContext context, AuthProvider authProvider) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
         onTap: () async {
           try {
-            final response = await Solflare.connect(ConnectOptions('mainnet-beta')); // Changed
+            final result = await js_util.promiseToFuture(
+              js_util.callMethod(html.window, 'connectSolflare', []),
+            );
 
-            final publicKey = response.publicKey.toString();
-            print("Public Key: $publicKey");
-            authProvider.login(publicKey);
-          } catch (error) {
-            print("Error connecting to Solflare: $error");
+            if (result is Map && result.containsKey('error')) {
+              // Handle error from JavaScript
+              print("Connection error: ${result['error']}");
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Failed to connect wallet: ${result['error']}'),
+                  duration: const Duration(seconds: 5),
+                ),
+              );
+            } else if (result is Map && result.containsKey('publicKey')) {
+              //  Access the publicKey from the result object.
+              final publicKey = result['publicKey'];
+              authProvider.login(publicKey);
+            } else {
+              print("Unexpected result: $result"); // Add this to see what is returned.
+            }
+          } catch (e) {
+            print("Error connecting to Solflare: $e");
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Failed to connect wallet: $error'),
+                content: Text('Failed to connect wallet: $e'),
                 duration: const Duration(seconds: 5),
               ),
             );
@@ -142,3 +167,95 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
+//  For sending Transaction
+// Future<dynamic> sendSolanaTransaction(Transaction transaction) async {
+//   try {
+//     // Convert the Transaction object to a JavaScript object.
+//     final jsTransaction = js_util.jsify(transaction.toJson());
+//
+//     // Call the JavaScript function and await the result.
+//     final result = await js_util.promiseToFuture(
+//       js_util.callMethod(html.window, 'signAndSendTransactionSolflare', [jsTransaction]),
+//     );
+//
+//     if (result is Map && result.containsKey('error')) {
+//       print("Error sending transaction: ${result['error']}");
+//       throw Exception(result['error']); // Throw an exception to be caught in Dart
+//     }
+//     //  Access signature
+//     final signature = result['signature'];
+//     return signature;
+//   } catch (e) {
+//     print("Error in sendSolanaTransaction: $e");
+//     throw e;
+//   }
+// }
+
+// For signing transaction
+// Future<Transaction?> signSolanaTransaction(Transaction transaction) async {
+//   try {
+//     // Convert the Transaction object to a JavaScript object.
+//     final jsTransaction = js_util.jsify(transaction.toJson());
+//
+//     // Call the JavaScript function and await the result.
+//     final result = await js_util.promiseToFuture<dynamic>(
+//       js_util.callMethod(html.window, 'signTransactionSolflare', [jsTransaction]),
+//     );
+//
+//     if (result is Map && result.containsKey('error')) {
+//       print("Error signing transaction: ${result['error']}");
+//       throw Exception(result['error']); // Throw for Dart
+//     }
+//
+//     // Convert the result back to a Transaction object.  Adapt this based on the actual structure.
+//     final signedTransaction = result['signedTransaction'];
+//     if (signedTransaction == null) {
+//       return null;
+//     }
+//     //  This part depends on the structure of the signedTransaction object
+//     //  You'll need to adapt it based on the actual properties returned from JavaScript.
+//     final signature = signedTransaction['signature'];
+//
+//     final transactionSignature =
+//     TransactionSignature(signature: signature);
+//
+//     // Create a new Transaction object.  This is a placeholder.
+//     final signedSolanaTransaction = Transaction(
+//       signatures: [transactionSignature],
+//       instructions: transaction.instructions,
+//       feePayer: transaction.feePayer,
+//     );
+//
+//     return signedSolanaTransaction;
+//   } catch (e) {
+//     print("Error signing transaction: $e");
+//     throw e;
+//   }
+// }
+
+//  For signing Message
+// Future<Uint8List?> signSolanaMessage(Uint8List message) async {
+//   try {
+//     // Call the JavaScript function and await the result.
+//     final result = await js_util.promiseToFuture(
+//       js_util.callMethod(html.window, 'signMessageSolflare', [message]),
+//     );
+//
+//     if (result is Map && result.containsKey('error')) {
+//       print("Error signing message: ${result['error']}");
+//       throw Exception(result['error']); // Throw for Dart
+//     }
+//     final signedMessageArray = result['signedMessage'];
+//     if (signedMessageArray == null) {
+//       return null;
+//     }
+//
+//     // Convert the JavaScript array back to Uint8List.
+//     final signedMessage = Uint8List.fromList(signedMessageArray.cast<int>());
+//     return signedMessage;
+//   } catch (e) {
+//     print("Error signing message: $e");
+//     throw e;
+//   }
+// }
+//
