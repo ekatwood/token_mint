@@ -41,7 +41,7 @@ void errorLogger(String errorMessage, String context) {
   }).catchError((error) => print("Failed to log error: $error"));
 }
 
-void phantomWalletConnected(String wallet_address) {
+void solflareWalletConnected(String wallet_address) {
 
   //add the public wallet address to the database, if it's not already there
   FirebaseFirestore.instance
@@ -49,20 +49,49 @@ void phantomWalletConnected(String wallet_address) {
       .doc(wallet_address) // Use wallet address as document ID
       .set({})
       .then((_) => print("Wallet address added successfully"))
-      .catchError((error) => errorLogger("Failed to add wallet address: $error",'phantomWalletConnected(String wallet_address)'));
+      .catchError((error) => errorLogger("Failed to add wallet address: $error",'solflareWalletConnected(String wallet_address)'));
 }
 
-void addMintedToken(String wallet_address, String token_mint_address, String name, String symbol, String image, String type, int numTokens) {
+bool addMintedToken({
+  required String walletAddress,
+  required String tokenMintAddress,
+  required String name,
+  required String symbol,
+  required String image,
+  required String type,
+  required int numTokens,
+  required String description,
+  required int numDecimals,
+  required bool isMetadataMutable,
+  required String externalURL
+}) {
+  if (name.length > 500) {
+    print("Error: Token name exceeds the maximum character limit of 500.");
+    return false;
+  }
+  if (symbol.length > 100) {
+    print("Error: Token symbol exceeds the maximum character limit of 100.");
+    return false;
+  }
+  if (numDecimals < 0 || numDecimals > 9) {
+    print("Error: Number of decimals must be between 0 and 9.");
+    return false;
+  }
+
   FirebaseFirestore.instance
       .collection('public_wallet_addresses')
-      .doc(wallet_address)
+      .doc(walletAddress)
       .collection('tokens')
-      .doc(token_mint_address)
+      .doc(tokenMintAddress)
       .set({
     "name": name,
     "symbol": symbol,
     "image": image,
-    "numTokens": numTokens,
+    "supply": numTokens,
+    "description": description,
+    "decimals": numDecimals,
+    "is_mutable": isMetadataMutable,
+    "external_url": externalURL,
     "properties": {
       "files": [
         {
@@ -73,5 +102,21 @@ void addMintedToken(String wallet_address, String token_mint_address, String nam
     }
   })
       .then((_) => print("Token metadata saved to database"))
-      .catchError((error) => errorLogger("Error saving token metadata to database: $error", 'addMintedToken(String wallet_address, String token_mint_address, String name, String symbol, String image, String type, int numTokens)'));
+      .catchError((error) => errorLogger("Error saving token metadata to database: $error", 'addMintedToken(String wallet_address, String token_mint_address, String name, String symbol, String image, String type, int numTokens, String description, int numDecimals, bool isMetadataMutable)'));
+
+  return true;
+}
+
+Future<DocumentSnapshot?> getTokenDetails(String mintAddress) async {
+  try {
+    final DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+        .collection('tokens')
+        .doc(mintAddress)
+        .get();
+    return documentSnapshot;
+  } catch (error) {
+    print("Error fetching token details for mint address: $mintAddress - $error");
+    errorLogger("Error fetching token details for mint address: $mintAddress - $error",'getTokenDetails(String mintAddress)');
+    return null;
+  }
 }
