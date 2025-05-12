@@ -22,7 +22,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     final isLoggedIn = authProvider.isLoggedIn;
 
     return AppBar(
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.tealAccent,
       leading: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GestureDetector(
@@ -31,14 +31,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           },
           child: Image.asset(
             'assets/logo.png',
-            width: 40,
-            height: 40,
+            width: 100,
+            height: 100,
           ),
         ),
       ),
-      leadingWidth: 60,
-      title: const Text('Token Mint'),
-      centerTitle: true,
+      //leadingWidth: 60,
       actions: [
         if (isLoggedIn)
           _buildLoggedInActions(context, authProvider)
@@ -152,8 +150,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         },
         child: SvgPicture.asset(
           'assets/solflare_logo.svg',
-          width: 30,
-          height: 30,
+          width: 60,
+          height: 60,
         ),
       ),
     );

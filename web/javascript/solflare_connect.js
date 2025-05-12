@@ -1,46 +1,91 @@
-     async function connectSolflare() {
-       try {
-         if (!window.solflare) {
-           console.error("Solflare wallet is not available.");
-           return { error: "Solflare not available" }; // Return an object with an error
-         }
+async function connectSolflare() {
+  try {
+    if (!window.solflare) {
+      console.error("Solflare wallet is not available.");
+      return {
+        error: "Solflare not available"
+      };
+    }
+    console.log('connecting to solflare');
+    const response = await window.solflare.connect();
+    console.log('Response from solflare.connect():', response);
+    if (response === true) {
+      console.log('true');
+      console.log(window.solflare.publicKey.toString());
+      //  If response is true, assume connection was successful and try to get the public key directly from window.solflare
+      if (window.solflare.publicKey) {
+        const publicKey = window.solflare.publicKey.toString();
+        return {
+          publicKey
+        };
+      } else {
+        console.error("Solflare connected, but publicKey is not available.");
+        return {
+          error: "Solflare connected, but publicKey is not available."
+        };
+      }
+    } else if (response && response.publicKey) {
+      //  Handle the case where response *is* an object with publicKey
+      const publicKey = response.publicKey.toString();
+      return {
+        publicKey
+      };
+    } else {
+      console.error("Unexpected response from Solflare:", response);
+      return {
+        error: "Unexpected response from Solflare"
+      };
+    }
+  } catch (error) {
+    console.error("Error connecting to Solflare:", error);
+    return {
+      error: error.message || "Failed to connect"
+    };
+  }
+}
 
-         const response = await window.solflare.connect();
-         const publicKey = response.publicKey.toString();
-         return { publicKey }; // Return an object with publicKey
-       } catch (error) {
-         console.error("Error connecting to Solflare:", error);
-         return { error: error.message || "Failed to connect" }; // Return error info
-       }
-     }
 
-     async function disconnectSolflare() {
-       try {
-         if (window.solflare) {
-           await window.solflare.disconnect();
-           return { success: true };
-         } else {
-           return { error: "Solflare not available" };
-         }
-       } catch (error) {
-         console.error("Error disconnecting from Solflare:", error);
-         return { error: error.message || "Failed to disconnect" };
-       }
-     }
+async function disconnectSolflare() {
+  try {
+    if (window.solflare) {
+      await window.solflare.disconnect();
+      return {
+        success: true
+      };
+    } else {
+      return {
+        error: "Solflare not available"
+      };
+    }
+  } catch (error) {
+    console.error("Error disconnecting from Solflare:", error);
+    return {
+      error: error.message || "Failed to disconnect"
+    };
+  }
+}
 
-     async function isSolflareConnected() {
-       try {
-         if (window.solflare) {
-           const connected = window.solflare.isConnected;
-           return { connected };
-         } else {
-           return { connected: false, error: "Solflare not available" };
-         }
-       } catch (error) {
-         console.error("Error checking connection:", error);
-         return { connected: false, error: error.message || "Failed to check connection" };
-       }
-     }
+async function isSolflareConnected() {
+  try {
+    if (window.solflare) {
+      const connected = window.solflare.isConnected;
+      return {
+        connected
+      };
+    } else {
+      return {
+        connected: false,
+        error: "Solflare not available"
+      };
+    }
+  } catch (error) {
+    console.error("Error checking connection:", error);
+    return {
+      connected: false,
+      error: error.message || "Failed to check connection"
+    };
+  }
+}
 
 //     async function signTransactionSolflare(transaction) {
 //        try {
