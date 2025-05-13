@@ -92,6 +92,7 @@ bool addMintedToken({
     "decimals": numDecimals,
     "is_mutable": isMetadataMutable,
     "external_url": externalURL,
+    "like_count": 0,
     "properties": {
       "files": [
         {
@@ -118,5 +119,83 @@ Future<DocumentSnapshot?> getTokenDetails(String mintAddress) async {
     print("Error fetching token details for mint address: $mintAddress - $error");
     errorLogger("Error fetching token details for mint address: $mintAddress - $error",'getTokenDetails(String mintAddress)');
     return null;
+  }
+}
+
+Future<Map<String, dynamic>?> getTokens(String walletAddress) async {
+  try {
+    final DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+        .collection('public_wallet_addresses')
+        .doc(walletAddress)
+        .get();
+
+    if (documentSnapshot.exists && documentSnapshot.data() != null) {
+      return documentSnapshot.data() as Map<String, dynamic>?;
+    } else {
+      print("No data found for wallet address: $walletAddress");
+      return null;
+    }
+  } catch (error) {
+    print("Error fetching tokens for wallet address: $walletAddress - $error");
+    errorLogger("Error fetching tokens for wallet address: $walletAddress - $error",'getTokens(String walletAddress)');
+    return null;
+  }
+}
+
+Future<void> incrementLikeCounter(
+    String walletAddress,
+    String mintAddress,
+    List<String> likedProjects,
+    List<String> dislikedProjects,
+    bool like,
+    bool dislike
+    ) async {
+  final DocumentReference tokenRef = FirebaseFirestore.instance
+      .collection('public_wallet_addresses')
+      .doc(walletAddress)
+      .collection('tokens')
+      .doc(mintAddress);
+
+  try {
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      final DocumentSnapshot snapshot = await transaction.get(tokenRef);
+
+      if (!snapshot.exists) {
+        throw Exception("Token not found for wallet: $walletAddress and mint: $mintAddress");
+      }
+
+      int currentLikes = (snapshot.data() as Map<String, dynamic>?)?['likes'] ?? 0;
+      int currentDislikes = (snapshot.data() as Map<String, dynamic>?)?['dislikes'] ?? 0;
+
+      bool isCurrentlyLiked = likedProjects.contains(mintAddress);
+      bool isCurrentlyDisliked = dislikedProjects.contains(mintAddress);
+
+      Map<String, dynamic> updateData = {};
+
+      // Determine the action based on the current state and the new like/dislike
+      if (like && isCurrentlyLiked) {
+        // User is unliking
+        updateData['likes'] = currentLikes > 0 ? currentLikes - 1 : 0;
+        print("Unliked token: $mintAddress in wallet: $walletAddress");
+      } else if(like && !isCurrentlyLiked){
+        // User is liking
+        updateData['likes'] = currentLikes + 1;
+        print("Liked token: $mintAddress in wallet: $walletAddress");
+      }
+      else if (dislike && isCurrentlyDisliked) {
+        // User is undoing dislike
+        updateData['dislikes'] = currentDislikes > 0 ? currentDislikes - 1 : 0;
+        print("Undoing dislike for token: $mintAddress in wallet: $walletAddress");
+      } else {
+        // User is disliking
+        updateData['dislikes'] = currentDislikes + 1;
+        print("Disliked token: $mintAddress in wallet: $walletAddress");
+      }
+
+      transaction.update(tokenRef, updateData);
+    });
+  } catch (error) {
+    print("Error updating like/dislike for token: $mintAddress in wallet: $walletAddress - $error");
+    errorLogger("Error updating like/dislike for token: $mintAddress in wallet: $walletAddress - $error",'incrementLikeCounter(String walletAddress, String mintAddress, List<String> likedProjects, List<String> dislikedProjects)');
   }
 }
