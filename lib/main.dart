@@ -1,7 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'appbar.dart';
 import 'auth_provider.dart';
+import 'create_token_form.dart';
+
+final _router = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) => const TokenMint(),
+    ),
+    GoRoute(
+      path: '/mint_token',
+      builder: (context, state) => const TokenFactory(), // Create this page
+    ),
+    // GoRoute(
+    //   path: '/my_projects',
+    //   builder: (context, state) => const MyProjectsPage(), // and this page
+    // ),
+  ],
+);
 
 void main() {
   runApp(// Provide the AuthProvider to the entire application.
@@ -17,19 +36,20 @@ class TokenMintApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Token Mint App', // The title of the app.
+    return MaterialApp.router(
+      routerConfig: _router,
+      title: 'MOONROCKET', // The title of the app.
       // Theme settings for the app.  This controls the visual appearance.
       theme: ThemeData(
-        primarySwatch: Colors.blue, // Primary color for the app.
-        fontFamily: 'Roboto', // Default font family.
+        primarySwatch: Colors.teal, // Primary color for the app.
+        fontFamily: 'SourceCodePro', // Default font family.
         //  You can customize the textTheme further, if needed.
         textTheme: const TextTheme(
           bodyMedium: TextStyle(fontSize: 16.0), // Default body text style.
         ),
       ),
       // The home screen of the app.
-      home: const TokenMint(),
+      //home: const TokenMint(),
     );
   }
 }
@@ -45,15 +65,6 @@ class TokenMint extends StatefulWidget {
 
 // The state class for the TokenMint widget.
 class _TokenMintState extends State<TokenMint> {
-  int _counter = 0; // A counter variable to demonstrate state management.
-
-  // This method is called when the '+' button is pressed.
-  void _incrementCounter() {
-    setState(() {
-      // This tells Flutter to rebuild the widget with the new value of _counter.
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,25 +74,11 @@ class _TokenMintState extends State<TokenMint> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center, // Center the content vertically.
-          children: <Widget>[
-            const Text(
-              'Click the button to increment the counter:', // Instructions text.
-              style: TextStyle(fontSize: 18.0),
-            ),
-            const SizedBox(height: 10), // Add some space between the text and the counter.
-            Text(
-              '$_counter', // Display the current value of the counter.
-              style: const TextStyle(fontSize: 48.0, fontWeight: FontWeight.bold),
-            ),
-          ],
+
         ),
       ),
       // Floating action button to increment the counter.
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter, // Call the _incrementCounter method when pressed.
-        tooltip: 'Increment', // Tooltip for the button.
-        child: const Icon(Icons.add), // Icon for the button.
-      ),
+
     );
   }
 }

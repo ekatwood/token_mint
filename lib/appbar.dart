@@ -23,20 +23,28 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     return AppBar(
       backgroundColor: Colors.tealAccent,
+      leadingWidth: 200,
       leading: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GestureDetector(
           onTap: () {
             context.go('/');
           },
-          child: Image.asset(
-            'assets/logo.png',
-            width: 100,
-            height: 100,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'MOONROCKET',
+              style: const TextStyle(
+                fontFamily: 'SourceCodePro',
+                fontSize: 20.0, // Adjust the font size as needed
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+                fontStyle: FontStyle.italic
+              ),
+            ),
           ),
         ),
       ),
-      //leadingWidth: 60,
       actions: [
         if (isLoggedIn)
           _buildLoggedInActions(context, authProvider)
@@ -148,10 +156,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             );
           }
         },
-        child: SvgPicture.asset(
-          'assets/solflare_logo.svg',
-          width: 60,
-          height: 60,
+        child: ClipRRect( // Wrap the SvgPicture with ClipRRect
+          borderRadius: BorderRadius.circular(12.0), // Adjust the radius as needed
+          child: Image.asset(
+            'assets/Solflare_INSIGNIA_Obsidian_Noir.png',
+            width: 48,
+            height: 48,
+          ),
         ),
       ),
     );

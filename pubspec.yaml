@@ -73,8 +73,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/logo.png
-    - assets/solflare_logo.svg
+    - assets/moonrocket_logo.png
+    - assets/Solflare_INSIGNIA_Obsidian_Noir.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

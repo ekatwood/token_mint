@@ -93,6 +93,7 @@ bool addMintedToken({
     "is_mutable": isMetadataMutable,
     "external_url": externalURL,
     "like_count": 0,
+    "dislike_count": 0,
     "properties": {
       "files": [
         {
@@ -196,6 +197,6 @@ Future<void> incrementLikeCounter(
     });
   } catch (error) {
     print("Error updating like/dislike for token: $mintAddress in wallet: $walletAddress - $error");
-    errorLogger("Error updating like/dislike for token: $mintAddress in wallet: $walletAddress - $error",'incrementLikeCounter(String walletAddress, String mintAddress, List<String> likedProjects, List<String> dislikedProjects)');
+    errorLogger("Error updating like/dislike for token: $mintAddress in wallet: $walletAddress - $error",'incrementLikeCounter(String walletAddress, String mintAddress, List<String> likedProjects, List<String> dislikedProjects, bool like, bool dislike)');
   }
 }
