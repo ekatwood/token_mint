@@ -55,6 +55,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   Widget _buildLoggedInActions(BuildContext context, AuthProvider authProvider) {
+
     return PopupMenuButton<String>(
       itemBuilder: (BuildContext context) {
         return [
@@ -76,7 +77,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ];
       },
-      onSelected: (String value) {
+      onSelected: (String value) async {
         switch (value) {
           case 'mint_token':
             context.go('/mint_token');
@@ -88,7 +89,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             context.go('/settings');
             break;
           case 'disconnect_wallet':
-            disconnectWallet(authProvider);
+            bool disconnect = await disconnectWallet(authProvider);
+            if(!disconnect){
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Failed to disconnect Solfare.'),
+                  duration: const Duration(seconds: 5),
+                ),
+              );
+            }
             break;
         }
       },
@@ -108,22 +117,24 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  void disconnectWallet(AuthProvider authProvider) async {
+  Future<bool> disconnectWallet(AuthProvider authProvider) async {
     try {
-      final result = await js_util.promiseToFuture(
+      final result = await js_util.promiseToFuture<String>(
         js_util.callMethod(html.window, 'disconnectSolflare', []),
       );
-      if (result is Map && result.containsKey('error')) {
-        // Handle error
-        print("Disconnect error: ${result['error']}");
-        // Show error message to the user if necessary
-        return;
+
+      if (result == 'wallet disconnected') {
+        authProvider.logout();
+        return true;
       }
-      authProvider.logout();
+      else {
+        return false;
+      }
     } catch (e) {
       print("Error disconnecting wallet: $e");
       //  firestoreLogger(e.toString(), 'disconnectWallet()'); // Removed firestore_functions
       // Show error message to the user
+      return false;
     }
   }
 
@@ -133,11 +144,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: GestureDetector(
         onTap: () async {
           try {
-            final result = await js_util.promiseToFuture(
+            final result = await js_util.promiseToFuture<String>(
               js_util.callMethod(html.window, 'connectSolflare', []),
             );
-
-            if (result.toString() == 'Solflare unavailable') {
+            print(result);
+            if (result == 'Solflare unavailable') {
               // Handle error from JavaScript
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -149,7 +160,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             else {
               // Access the publicKey from the result.
               //TODO: write to db if necessary
+              print('wallet: ' + result.toString());
+              print('isLoggedIn: ' + authProvider.isLoggedIn.toString());
+              print('wallet address in authprovider: '+ authProvider.walletAddress);
               authProvider.login(result.toString());
+              print('after authProvider.login(result.toString())');
+              print('isLoggedIn: ' + authProvider.isLoggedIn.toString());
+              print('wallet address in authprovider: '+ authProvider.walletAddress);
             }
 
           } catch (e) {

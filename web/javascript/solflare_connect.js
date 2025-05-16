@@ -1,6 +1,4 @@
 async function connectSolflare() {
-  console.log('in javascript function connectSolflare()');
-
   try {
     if (!window.solflare) {
       console.error("Solflare unavailable.");
@@ -19,24 +17,18 @@ async function connectSolflare() {
   }
 }
 
-
 async function disconnectSolflare() {
   try {
     if (window.solflare) {
       await window.solflare.disconnect();
-      return {
-        success: true
-      };
-    } else {
-      return {
-        error: "Solflare not available"
-      };
+      return "wallet disconnected";
+    }
+    else {
+      return "Solflare unavailable";
     }
   } catch (error) {
     console.error("Error disconnecting from Solflare:", error);
-    return {
-      error: error.message || "Failed to disconnect"
-    };
+    return "Solflare unavailable";
   }
 }
 

@@ -13,7 +13,7 @@ class AuthProvider extends ChangeNotifier {
     _isLoggedIn = true;
     _walletAddress = walletAddress;
 
-    solflareWalletConnected(walletAddress);
+    //solflareWalletConnected(walletAddress);
 
     notifyListeners(); // Notify listeners that the state has changed.
   }
@@ -21,6 +21,7 @@ class AuthProvider extends ChangeNotifier {
   // Call this method when the user logs out.
   void logout() {
     _isLoggedIn = false;
+    _walletAddress = '';
     notifyListeners();
   }
 }
