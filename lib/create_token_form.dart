@@ -1,9 +1,13 @@
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'auth_provider.dart' as ap;
 import 'package:token_mint/settings.dart';
 import 'package:token_mint/upload_to_Arweave.dart';
+import 'appbar.dart';
 import 'create_token.dart';
 import 'firestore_functions.dart';
 import 'firebase_options.dart';
@@ -36,11 +40,11 @@ class _TokenFactoryState extends State<TokenFactory> {
 
   // check form input max length
   bool isValidTokenName(String name) {
-    return utf8.encode(name).length <= 32;
+    return utf8.encode(name).length <= 500;
   }
 
   bool isValidTokenSymbol(String symbol) {
-    return utf8.encode(symbol).length <= 10;
+    return utf8.encode(symbol).length <= 100;
   }
 
   // Helper function to parse token quantities with M/B notation
@@ -109,60 +113,10 @@ class _TokenFactoryState extends State<TokenFactory> {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<ap.AuthProvider>(context);
+
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.tealAccent,
-        elevation: 3,
-        shadowColor: Color(0x1DF7A0),
-        toolbarHeight: 84,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(width: 24),
-            ClipOval(
-              child: Image.asset(
-                'assets/logo.png',
-                height: 72,
-                width: 72, // Ensure the width and height are the same for a perfect circle
-                fit: BoxFit.cover, // Ensures the image fills the circular area properly
-              ),
-            ),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.only(right: 14.0),
-              child: GestureDetector(
-                onTap: () async {
-                  // if(_walletConnected == true){
-                  //   print('opening wallet again');
-                  //   await openPhantomIfConnected();
-                  // }
-                  // else{
-                  //   _walletAddress = await connectPhantom();
-                  // }
-                  // if (_walletAddress == 'error') {
-                  //   ScaffoldMessenger.of(context).showSnackBar(
-                  //     SnackBar(
-                  //         content: Text(
-                  //             'Please make sure Phantom Wallet browser extension is installed.')),
-                  //   );
-                  // } else {
-                  //   _walletConnected = true;
-                  //   //add public wallet address to database if not already there
-                  //   //phantomWalletConnected(_walletAddress!);
-                  // }
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  clipBehavior: Clip.antiAlias,
-                  //child: PhantomGhostButton(size: 55),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      appBar: const CustomAppBar(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -171,7 +125,7 @@ class _TokenFactoryState extends State<TokenFactory> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                if (_walletConnected) // Only show the button when the wallet is connected
+                if (authProvider.isLoggedIn) // Only show the button when the wallet is connected
                   Padding(
                     padding: const EdgeInsets.only(top: 10, right: 10),
                     child: Align(
@@ -304,7 +258,7 @@ class _TokenFactoryState extends State<TokenFactory> {
                             return 'Please enter the token quantity';
                           }
                           _tokenQuantity = parseTokenQuantity(value);
-                          print(_tokenQuantity);
+                          //print(_tokenQuantity);
                           if (_tokenQuantity == null) {
                             return 'Please enter a valid number';
                           }
@@ -421,35 +375,6 @@ class _TokenFactoryState extends State<TokenFactory> {
                         padding: const EdgeInsets.symmetric(vertical: 10),
                       ),
                       child: const Text('Mint Token'),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 520),
-                  child: Center(
-                    child: RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: "2% of token supply minted goes to the token-mint treasury vault and is automatically staked to Solana blockchain. Staking rewards will be randomly airdropped to users who opt-in to receiving airdrops. Good luck with your token, we hope you make a winner! ",
-                            style: TextStyle(
-                              fontFamily: _fontFamily,
-                              fontWeight: FontWeight.bold,
-                              fontStyle: FontStyle.italic,
-                              color: Colors.black, // Ensure text color is set
-                            ),
-                          ),
-                          TextSpan(
-                            text: "🔥📈💸",
-                            style: TextStyle(
-                              fontFamily: 'NotoColorEmoji',
-                              fontStyle: FontStyle.italic,
-                            ),
-                          ),
-                        ],
-                      ),
                     ),
                   ),
                 ),

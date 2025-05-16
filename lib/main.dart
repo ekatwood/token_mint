@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:token_mint/settings.dart';
 import 'appbar.dart';
 import 'auth_provider.dart';
 import 'create_token_form.dart';
@@ -15,10 +16,10 @@ final _router = GoRouter(
       path: '/mint_token',
       builder: (context, state) => const TokenFactory(), // Create this page
     ),
-    // GoRoute(
-    //   path: '/my_projects',
-    //   builder: (context, state) => const MyProjectsPage(), // and this page
-    // ),
+    GoRoute(
+      path: '/settings',
+      builder: (context, state) => SettingsPage(), // and this page
+    ),
   ],
 );
 

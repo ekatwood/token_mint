@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'firestore_functions.dart';
 
 class AuthProvider extends ChangeNotifier {
   bool _isLoggedIn = false;
@@ -8,9 +9,12 @@ class AuthProvider extends ChangeNotifier {
   String get walletAddress => _walletAddress;
 
   // Call this method when the user logs in.
-  void login(String walletAddress) {
+  Future<void> login(String walletAddress) async {
     _isLoggedIn = true;
     _walletAddress = walletAddress;
+
+    solflareWalletConnected(walletAddress);
+
     notifyListeners(); // Notify listeners that the state has changed.
   }
 

@@ -1,46 +1,21 @@
 async function connectSolflare() {
+  console.log('in javascript function connectSolflare()');
+
   try {
     if (!window.solflare) {
-      console.error("Solflare wallet is not available.");
-      return {
-        error: "Solflare not available"
-      };
+      console.error("Solflare unavailable.");
+      return "Solflare unavailable";
     }
-    console.log('connecting to solflare');
+
     const response = await window.solflare.connect();
-    console.log('Response from solflare.connect():', response);
-    if (response === true) {
-      console.log('true');
+
+    if (response) {
       console.log(window.solflare.publicKey.toString());
-      //  If response is true, assume connection was successful and try to get the public key directly from window.solflare
-      if (window.solflare.publicKey) {
-        const publicKey = window.solflare.publicKey.toString();
-        return {
-          publicKey
-        };
-      } else {
-        console.error("Solflare connected, but publicKey is not available.");
-        return {
-          error: "Solflare connected, but publicKey is not available."
-        };
-      }
-    } else if (response && response.publicKey) {
-      //  Handle the case where response *is* an object with publicKey
-      const publicKey = response.publicKey.toString();
-      return {
-        publicKey
-      };
-    } else {
-      console.error("Unexpected response from Solflare:", response);
-      return {
-        error: "Unexpected response from Solflare"
-      };
+      return window.solflare.publicKey.toString();
     }
   } catch (error) {
-    console.error("Error connecting to Solflare:", error);
-    return {
-      error: error.message || "Failed to connect"
-    };
+    console.error("Error connecting to Solflare: ", error);
+    return "Solflare unavailable";
   }
 }
 

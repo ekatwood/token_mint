@@ -66,6 +66,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             value: 'my_projects',
             child: Text('My Projects'),
           ),
+          const PopupMenuItem<String>(
+            value: 'settings',
+            child: Text('Settings'),
+          ),
           PopupMenuItem<String>(
             value: 'disconnect_wallet',
             child: Text('Disconnect Wallet'),
@@ -79,6 +83,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             break;
           case 'my_projects':
             context.go('/my_projects');
+            break;
+          case 'settings':
+            context.go('/settings');
             break;
           case 'disconnect_wallet':
             disconnectWallet(authProvider);
@@ -130,27 +137,26 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               js_util.callMethod(html.window, 'connectSolflare', []),
             );
 
-            if (result is Map && result.containsKey('error')) {
+            if (result.toString() == 'Solflare unavailable') {
               // Handle error from JavaScript
-              print("Connection error: ${result['error']}");
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Failed to connect wallet: ${result['error']}'),
+                  content: Text('Solflare wallet unavailable. Please make sure to install Solflare browser extension.'),
                   duration: const Duration(seconds: 5),
                 ),
               );
-            } else if (result is Map && result.containsKey('publicKey')) {
-              //  Access the publicKey from the result object.
-              final publicKey = result['publicKey'];
-              authProvider.login(publicKey);
-            } else {
-              print("Unexpected result: $result"); // Add this to see what is returned.
             }
+            else {
+              // Access the publicKey from the result.
+              //TODO: write to db if necessary
+              authProvider.login(result.toString());
+            }
+
           } catch (e) {
             print("Error connecting to Solflare: $e");
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Failed to connect wallet: $e'),
+                content: Text('Solflare wallet unavailable. Please make sure to install Solflare browser extension.'),
                 duration: const Duration(seconds: 5),
               ),
             );
