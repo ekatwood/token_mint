@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'auth_provider.dart';
 import 'dart:js_util' as js_util;
 import 'dart:html' as html;
-//import 'package:solana_web3/solana_web3.dart'; // Import Solana types
-import 'dart:typed_data';
-import 'package:flutter/foundation.dart';
-import 'package:js/js.dart';
+import 'package:flutter_svg/flutter_svg.dart'; // Import for SVG icons
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
@@ -30,16 +26,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           onTap: () {
             context.go('/');
           },
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
+          child: const Padding(
+            padding: EdgeInsets.all(8.0),
             child: Text(
               'MOONROCKET',
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'SourceCodePro',
-                fontSize: 20.0, // Adjust the font size as needed
+                fontSize: 20.0,
                 fontWeight: FontWeight.bold,
                 color: Colors.black87,
-                fontStyle: FontStyle.italic
+                fontStyle: FontStyle.italic,
               ),
             ),
           ),
@@ -55,7 +51,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   Widget _buildLoggedInActions(BuildContext context, AuthProvider authProvider) {
-
     return PopupMenuButton<String>(
       itemBuilder: (BuildContext context) {
         return [
@@ -80,21 +75,21 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       onSelected: (String value) async {
         switch (value) {
           case 'mint_token':
-            context.go('/mint_token');
+            context.go('/mint_token/'+authProvider.blockchainNetwork);
             break;
           case 'my_projects':
-            context.go('/my_projects');
+            context.go('/my_projects/'+authProvider.blockchainNetwork);
             break;
           case 'settings':
-            context.go('/settings');
+            context.go('/settings/'+authProvider.blockchainNetwork);
             break;
           case 'disconnect_wallet':
             bool disconnect = await disconnectWallet(authProvider);
-            if(!disconnect){
+            if (!disconnect) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Failed to disconnect Solfare.'),
-                  duration: const Duration(seconds: 5),
+                const SnackBar(
+                  content: Text('Failed to disconnect wallet.'),
+                  duration: Duration(seconds: 5),
                 ),
               );
             }
@@ -119,21 +114,26 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   Future<bool> disconnectWallet(AuthProvider authProvider) async {
     try {
-      final result = await js_util.promiseToFuture<String>(
-        js_util.callMethod(html.window, 'disconnectSolflare', []),
-      );
+      String? result;
+      if(authProvider.blockchainNetwork == 'solflare'){
+        result = await js_util.promiseToFuture<String>(
+          js_util.callMethod(html.window, 'disconnectSolflare', []),
+        );
+      }
+      else{
+        result = await js_util.promiseToFuture<String>(
+          js_util.callMethod(html.window, 'disconnectMetaMask', []), //  Call Metamask
+        );
+      }
 
       if (result == 'wallet disconnected') {
         authProvider.logout();
         return true;
-      }
-      else {
+      } else {
         return false;
       }
     } catch (e) {
       print("Error disconnecting wallet: $e");
-      //  firestoreLogger(e.toString(), 'disconnectWallet()'); // Removed firestore_functions
-      // Show error message to the user
       return false;
     }
   }
@@ -142,53 +142,112 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
-        onTap: () async {
-          try {
-            final result = await js_util.promiseToFuture<String>(
-              js_util.callMethod(html.window, 'connectSolflare', []),
-            );
-            print(result);
-            if (result == 'Solflare unavailable') {
-              // Handle error from JavaScript
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Solflare wallet unavailable. Please make sure to install Solflare browser extension.'),
-                  duration: const Duration(seconds: 5),
-                ),
-              );
-            }
-            else {
-              // Access the publicKey from the result.
-              //TODO: write to db if necessary
-              print('wallet: ' + result.toString());
-              print('isLoggedIn: ' + authProvider.isLoggedIn.toString());
-              print('wallet address in authprovider: '+ authProvider.walletAddress);
-              authProvider.login(result.toString());
-              print('after authProvider.login(result.toString())');
-              print('isLoggedIn: ' + authProvider.isLoggedIn.toString());
-              print('wallet address in authprovider: '+ authProvider.walletAddress);
-            }
-
-          } catch (e) {
-            print("Error connecting to Solflare: $e");
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Solflare wallet unavailable. Please make sure to install Solflare browser extension.'),
-                duration: const Duration(seconds: 5),
-              ),
-            );
-          }
+        onTap: () {
+          // Show the wallet selection dropdown
+          _showWalletOptions(context, authProvider);
         },
-        child: ClipRRect( // Wrap the SvgPicture with ClipRRect
-          borderRadius: BorderRadius.circular(12.0), // Adjust the radius as needed
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12.0),
           child: Image.asset(
-            'assets/Solflare_INSIGNIA_Obsidian_Noir.png',
+            'assets/blockchain_wallet_icon.png', //  blockchain wallet icon
             width: 48,
             height: 48,
           ),
         ),
       ),
     );
+  }
+
+  void _showWalletOptions(BuildContext context, AuthProvider authProvider) {
+    showMenu(
+      context: context,
+      position: const RelativeRect.fromLTRB(
+        1000.0, //  Adjust as needed
+        kToolbarHeight, //  Position it below the AppBar
+        0.0,
+        0.0,
+      ),
+      items: [
+        PopupMenuItem<String>(
+          value: 'solflare',
+          child: Row(
+            children: [
+              Image.asset(
+                'assets/Solflare_INSIGNIA_Obsidian_Noir.png', //  Solflare logo
+                width: 24,
+                height: 24,
+              ),
+              const SizedBox(width: 8),
+              const Text('Solflare'),
+            ],
+          ),
+        ),
+        PopupMenuItem<String>(
+          value: 'metamask',
+          child: Row(
+            children: [
+              SvgPicture.asset(
+                'assets/metamask-fox.svg', //  MetaMask logo (SVG)
+                width: 24,
+                height: 24,
+              ),
+              const SizedBox(width: 8),
+              const Text('MetaMask'),
+            ],
+          ),
+        ),
+      ],
+    ).then((value) {
+      // Handle the selected wallet
+      if (value != null) {
+        _connectToWallet(context, authProvider, value);
+      }
+    });
+  }
+
+  Future<void> _connectToWallet(
+      BuildContext context, AuthProvider authProvider, String wallet) async {
+    try {
+      String? result;
+      if (wallet == 'solflare') {
+        result = await js_util.promiseToFuture<String>(
+          js_util.callMethod(html.window, 'connectSolflare', []),
+        );
+      } else if (wallet == 'metamask') {
+        result = await js_util.promiseToFuture<String>(
+          js_util.callMethod(html.window, 'connectMetaMask', []), //  Call Metamask
+        );
+      }
+
+      print("Result from $wallet: $result"); // Debugging
+
+      if (result == 'Solflare unavailable' || result == 'MetaMask unavailable') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('$wallet wallet unavailable. Please make sure to install the browser extension.'),
+            duration: const Duration(seconds: 5),
+          ),
+        );
+      } else if (result != null) {
+        //  Assume it's the public key
+        authProvider.login(result, wallet);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to connect to wallet.'),
+            duration: Duration(seconds: 5),
+          ),
+        );
+      }
+    } catch (e) {
+      print("Error connecting to $wallet: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to connect to $wallet: $e'),
+          duration: const Duration(seconds: 5),
+        ),
+      );
+    }
   }
 
   String _truncateWalletAddress(String address) {
@@ -198,6 +257,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return address;
   }
 }
+
+
 
 //  For sending Transaction
 // Future<dynamic> sendSolanaTransaction(Transaction transaction) async {
