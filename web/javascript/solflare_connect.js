@@ -1,33 +1,18 @@
 async function connectSolflare() {
   try {
     if (!window.solflare) {
-      console.error("Solflare unavailable.");
+      //console.error("Solflare unavailable.");
       return "Solflare unavailable";
     }
 
     const response = await window.solflare.connect();
 
     if (response) {
-      console.log(window.solflare.publicKey.toString());
+      //console.log(window.solflare.publicKey.toString());
       return window.solflare.publicKey.toString();
     }
   } catch (error) {
-    console.error("Error connecting to Solflare: ", error);
-    return "Solflare unavailable";
-  }
-}
-
-async function disconnectSolflare() {
-  try {
-    if (window.solflare) {
-      await window.solflare.disconnect();
-      return "wallet disconnected";
-    }
-    else {
-      return "Solflare unavailable";
-    }
-  } catch (error) {
-    console.error("Error disconnecting from Solflare:", error);
+    //console.error("Error connecting to Solflare: ", error);
     return "Solflare unavailable";
   }
 }
