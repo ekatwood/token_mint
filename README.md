@@ -22,5 +22,3 @@ Scaffolding front end
 Unit testing smart contracts and JavaScript
 
 <img width="353" alt="Screenshot 2025-03-24 at 11 34 16 AM" src="https://github.com/user-attachments/assets/00d8c81d-9c3a-48be-b761-287397135e72" />
-
-Disclaimer: this project will not sell any tokens sent to the treasury that are in violation of intellectual property rights. Any tokens that are in violation of intellectual property rights will be burned (sent to a wallet address where they cannot be retrieved from).
