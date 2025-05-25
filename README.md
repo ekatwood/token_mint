@@ -1,4 +1,4 @@
-# TokenMint
+# MOONROCKET
 
 Mint customizable Solana tokens for just the price of the transaction fees (a few transactions on Solana and Arweave, both payable with SOL). The transaction fees should be <$5 and probably around $1.
 
