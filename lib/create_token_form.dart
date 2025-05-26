@@ -125,28 +125,9 @@ class _TokenFactoryState extends State<TokenFactory> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                if (authProvider.isLoggedIn) // Only show the button when the wallet is connected
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, right: 10),
-                    child: Align(
-                      alignment: Alignment.topRight,
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => SettingsPage()),
-                          );
-                        },
-                        child: Text(
-                          'Settings',
-                          style: TextStyle(fontSize: 16, color: Colors.blue),
-                        ),
-                      ),
-                    ),
-                  ),
                 const SizedBox(height: 30),
                 ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 320),
+                  constraints: const BoxConstraints(maxWidth: 400),
                   child: TextFormField(
                     controller: _nameController,
                     decoration: InputDecoration(
@@ -172,11 +153,11 @@ class _TokenFactoryState extends State<TokenFactory> {
                 ),
                 const SizedBox(height: 16),
                 ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 240),
+                  constraints: const BoxConstraints(maxWidth: 400),
                   child: TextFormField(
                     controller: _symbolController,
                     decoration: InputDecoration(
-                      labelText: 'Symbol ex DOGE',
+                      labelText: 'Symbol',
                       labelStyle: TextStyle(
                           fontFamily: _fontFamily, fontWeight: FontWeight.bold),
                       border: const OutlineInputBorder(),
@@ -237,7 +218,7 @@ class _TokenFactoryState extends State<TokenFactory> {
                   ),
                 const SizedBox(height: 16),
                 ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 240),
+                  constraints: const BoxConstraints(maxWidth: 125),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -291,7 +272,7 @@ class _TokenFactoryState extends State<TokenFactory> {
                 const SizedBox(height: 30),
                 Center(
                   child: SizedBox(
-                    width: 208,
+                    width: 200,
                     child: ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate() &&
@@ -307,20 +288,18 @@ class _TokenFactoryState extends State<TokenFactory> {
                                     content: Text(
                                         'Please use an appropriate image.')),
                               );
-                            } else {
+                            }
+                            else if(!authProvider.isLoggedIn){
                               // connect to wallet if not already
-                              if(!_walletConnected){
-                                //_walletAddress = await connectPhantom();
-                                if (_walletAddress == 'error') {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text(
-                                            'Please make sure Phantom Wallet browser extension is installed.')),
-                                  );
-                                }
-                                else
-                                  _walletConnected = true;
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                         'Please connect a wallet.')),
+                              );
                               }
+                            else {
+
+    }
                               if(_walletConnected){
                                 //Upload logo to Arweave
                                 String metadataUri = await uploadToArweave(
@@ -378,7 +357,7 @@ class _TokenFactoryState extends State<TokenFactory> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 120),
+                const SizedBox(height: 150),
               ],
             ),
           ),
