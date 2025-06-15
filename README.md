@@ -1,19 +1,19 @@
 # MOONROCKET
 
-Mint customizable Solana tokens for just the price of the transaction fees (a few transactions on Solana and Arweave, both payable with SOL). The transaction fees should be <$5 and probably around $1.
+Mint customizable Solana or Ethereum (using Arbitrum) tokens for just the price of the transaction fees (a few transactions on Solana / Arbitrum and Arweave). The transaction fees should be <$5 and probably around $1.
 
 3% of tokens are sent to the MOONROCKET treasury vault as a fee and staked for 6 months.
 
-97% of tokens are sent to your Solflare wallet.
+97% of tokens are sent to your browser wallet extension (Solflare or MetaMask).
 
 
 Other features:
 
 A feed of most liked projects
 
-The ability to auction tokens for USDC or SOL or RAY
+A shareable link to your project page
 
-The ability to airdrop tokens to a list of wallet addresses
+Airdrop x% of tokens to a comma separated list of wallet addresses on the relevant network
 
 Current progress:
 
