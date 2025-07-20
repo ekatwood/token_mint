@@ -4,7 +4,7 @@ Mint customizable Solana or Ethereum (using Arbitrum) tokens for just the price 
 
 3% of tokens are sent to the MOONROCKET treasury vault as a fee and staked for 6 months.
 
-97% of tokens are sent to your browser wallet extension (Solflare or MetaMask).
+97% of tokens are sent to your blockchain wallet (Solflare or MetaMask).
 
 
 Other features:
